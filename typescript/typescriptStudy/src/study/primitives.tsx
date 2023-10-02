@@ -29,6 +29,7 @@ const Example = () => {
   console.log(undefinedValue);
 
 
+
   /* 🟢 리터럴型 : 리터럴에 의해서 형의 정보를 정의한는 것 */
   const trueVal: true = true as const;  // true만 넣을 수 있다.
   // trueVal = false;  =>  에러
@@ -40,9 +41,12 @@ const Example = () => {
   const strHello: 'Hello' = 'Hello' as const;  // 'Hello'만 넣을 수 있다. 'hello' (❌)
   console.log(strHello);
 
+
+
   /* 🟢 any형(뭐든 저장 가능) */
-  const anyValue: any = [];
+  const anyValue: string[] = [];
   console.log(anyValue);
 };
+
 
 export default Example;
