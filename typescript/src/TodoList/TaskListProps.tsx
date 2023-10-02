@@ -12,7 +12,7 @@ const TaskList: React.FC<TaskListProps> = ({ todos }) => {
         <ul>
           {
             todos.map((todo) => {
-              return <li>{todo.text}</li>;
+              return <li key={todo.text}>{todo.text}</li>;
             })}
         </ul>
       }
