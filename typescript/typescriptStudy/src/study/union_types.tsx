@@ -23,7 +23,7 @@ const Example = () => {
 
 
   // 🚩 type 키워드
-  type HelloOrNum = 'Hello' | number; // type을 지정
+  type HelloOrNum = 'Hello' | number; // 변수에 type을 지정
   const hello: HelloOrNum = 'Hello';
   console.log(hello);
   // const hello:'Hello' | number = 'Hello';   이것과 같은 의미
