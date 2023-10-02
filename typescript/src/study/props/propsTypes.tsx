@@ -1,5 +1,6 @@
-import React from 'react'
+/*  🟢 props 타입 */
 
+import React from 'react'
 //  일반  props 전달 하는 패턴  + children을 포함하는 패턴
 type HelloProps = {  // type으로 props 타입을 객체 리터럴로 정의
   text: string, // 1. 일반 props 전달(text)
