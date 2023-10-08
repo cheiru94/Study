@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -34,3 +35,31 @@ Route::post('/register',function () {
     return view('register');
 });
 
+
+Route::get('/register', function () {
+    return view('register_form');
+});
+
+Route::post('/register', function (Request $req) {
+//    $name = $req ->all(); // 토큰 포함 전부 출력
+   $name = $req ->except('_token');// 토큰 제외 출력
+    return view('register',['result' => $name]);
+});
+
+Route::get('/update', function () {
+    return view('update_form');
+});
+
+Route::put('/update', function (Request $req) {
+    $name = $req -> name; //  -> ==ㅋ .
+    $date = $req -> date;
+    $email = $req -> email;
+    $guild = $req -> guild;
+        return view('update',
+    [
+        'name'=>$name, //  => == :
+        'date'=>$date,
+        'email'=>$email,
+        'guild'=>$guild,
+    ]);
+    });

@@ -9,9 +9,12 @@
 </head>
 
 <body>
-    <h1>SoftBank</h1>
-    {{ $result }}様がログインされました。
+    {{ $name }}님의 입사를 진심으로 축하합니다
 
+
+    email : {{ $email }}
+    생년월일 : {{ $date }}
+    소속 : {{ $guild }}
 </body>
 
 </html>
