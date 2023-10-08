@@ -16,9 +16,6 @@
         소속 : <input type="text"><br>
         <button type="submit" >등록</button>
     </form>
-    <form action="/re" method="post">
-        @csrf
-        <button type="submit">re</button>
-    </form>
+    
 </body>
 </html>
