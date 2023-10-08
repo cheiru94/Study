@@ -29,32 +29,48 @@ Route::get('/ichiban', function () {
 
 
 
-
+// register
 Route::get('/register', function () {
     return view('register_form');
 });
 
 // post 요청 (t버튼을 눌르면 submit기능에 의해)
 Route::post('/register', function (Request $req) {
-//    $name = $req ->all(); // 토큰 포함 전부 출력
-   $name = $req ->except('_token');// 토큰 제외 출력
-    return view('register',['result' => $name]);
+    //    $name = $req ->all(); // 토큰 포함 전부 출력
+    $name = $req->except('_token'); // 토큰 제외 출력
+    return view('register', ['result' => $name]);
 });
 
+
+
+// update
 Route::get('/update', function () {
     return view('update_form');
 });
 
 Route::put('/update', function (Request $req) {
-    $name = $req -> name; //  -> ==ㅋ .
-    $date = $req -> date;
-    $email = $req -> email;
-    $guild = $req -> guild;
-        return view('update',
-    [
-        'name'=>$name, //  => == :
-        'date'=>$date,
-        'email'=>$email,
-        'guild'=>$guild,
-    ]);
-    });
+    $name = $req->name; //  -> == .
+    $date = $req->date;
+    $email = $req->email;
+    $guild = $req->guild;
+    return view(
+        'update',        // 값을 넘겨 줄 때는 이렇게 배열로 넘어간다.
+        [
+            'name' => $name, //  => == :
+            'date' => $date,
+            'email' => $email,
+            'guild' => $guild,
+        ]
+    );
+});
+
+
+
+// remove
+Route::get('/remove', function () {
+    return view('remove_form');
+});
+Route::delete('/remove', function (Request $req) {
+    $user = $req->user;
+    return view('remove', ["user" => $user]);
+});
