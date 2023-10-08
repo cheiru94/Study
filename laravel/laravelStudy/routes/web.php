@@ -26,20 +26,15 @@ Route::get('/', function () {  // Route:: 이게 '파사드' 라는 문법
 Route::get('/ichiban', function () {
     return view('ichiban');
 });
-Route::get('/test',function () {
-    return view('register_form');
-});
 
-// post 요청 (test[get]페이지 에서 버튼을 눌르면 submit기능에 의해)
-Route::post('/register',function () {
-    return view('register');
-});
+
 
 
 Route::get('/register', function () {
     return view('register_form');
 });
 
+// post 요청 (t버튼을 눌르면 submit기능에 의해)
 Route::post('/register', function (Request $req) {
 //    $name = $req ->all(); // 토큰 포함 전부 출력
    $name = $req ->except('_token');// 토큰 제외 출력
