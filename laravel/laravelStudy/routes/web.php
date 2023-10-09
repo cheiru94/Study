@@ -1,7 +1,9 @@
 <?php
 
+use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -23,7 +25,7 @@ Route::get('/', function () {  // Route:: 이게 '파사드' 라는 문법
 
 /*
     🍑 클로저 🍑
- */
+*/
 
 
 // 🍑 get 
@@ -75,3 +77,21 @@ Route::delete('/remove', function (Request $req) {
     $user = $req->user;
     return view('/closureremove', ["user" => $user]);
 });
+
+
+
+/*
+    🍑 컨트롤러 🍑
+*/
+// post
+    //    해당 url요청이 오면 ,이 컨트롤러의          이 메소드를 실행시키겠다.
+Route::get('/register2',[UserController::class,'create']);
+Route::post('/register2',[UserController::class,'store']);
+
+// put
+Route::get('/update2',[UserController::class,'edit']);
+Route::put('/update2',[UserController::class,'update']);
+
+// delete
+Route::get('/players',[UserController::class,'index']);
+Route::delete('/remove',[UserController::class,'destroy']);
