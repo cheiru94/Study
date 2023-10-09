@@ -3,51 +3,78 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\View\View;
 
 class UserController extends Controller
 {
-    // post
-    public function create():View {
-        return view('/controller/register_form');
+    /**
+     * Display a listing of the resource.
+     */
+    public function index()
+    {
+        //
     }
 
-    public function store(Request $req):View {
+    /**
+     * Show the form for creating a new resource.
+     */
+    public function create()
+    {
+        return view('/resourceController/register_form');
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function store(Request $req)
+    {
         $name = $req -> name;
         $date = $req -> date;
         $email = $req -> email;
         $guild = $req -> guild;
-        return view ('/controller/register',
-        [  'name'=>$name,
-            'date'=>$date,
-            'email'=>$email,
-            'guild'=>$guild
+        return view('/resourceController/register',
+        [
+            'name' => $name,
+            'date' => $date,
+            'email' => $email,
+            'guild' => $guild,
         ]);
     }
 
-    // put 
-    public function edit() :View{
-        return view('/controller/update_form');
-    }
-    public function update(Request $req) :View {
-        $name = $req -> name;
-        $date = $req -> date;
-        $email = $req -> email;
-        $guild = $req -> guild;
-        return view ('/controller/update',
-        [  'name'=>$name,
-            'date'=>$date,
-            'email'=>$email,
-            'guild'=>$guild
-        ]);
+    /**
+     * Display the specified resource.
+     */
+    public function show(Request $req, string $id)
+    {   
+      
+        return view('/resourceController/update_form',
+    [
+        'id'=>$id
+    ]
+    );
     }
 
-    // delete
-    public function index() :View {
-        return view('/controller/list');
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit(string $id)
+    {
+        //
     }
-    public function destroy(Request $req) :View {
-        $user = $req -> user;
-        return view('/controller/remove',['user' => $user]);
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(Request $request, string $id)
+    {   
+
+        return view();
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(string $id)
+    {
+        //
     }
 }
