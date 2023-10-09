@@ -21,17 +21,18 @@ Route::get('/', function () {  // Route:: 이게 '파사드' 라는 문법
 });                          // 웹 애플리케이션의 응답으로 사용자에게 보여질 화면을 생성하는데 사용
 
 
-/* 🚩 클로저 🚩 */
+/*
+    🍑 클로저 🍑
+ */
 
 
-// 🚩 get 
+// 🍑 get 
 //get방식으로 /ichiban url로 요청이 들오면 return 안의 views안에 있는 ichiban.blade.php라는 파일을 실행시켜 준다.  .blade.php는 생략 가능
 Route::get('/ichiban', function () {
-    return view('ichiban');
 });
 
 
-// 🚩 post
+// 🍑 post
 Route::get('/register', function () {
     return view('/closure/register_form');
 });
@@ -44,7 +45,7 @@ Route::post('/register', function (Request $req) {
 });
 
 
-// 🚩 put
+// 🍑 put
 Route::get('/update', function () {
     return view('/closure/update_form');
 });
@@ -66,7 +67,7 @@ Route::put('/update', function (Request $req) {
 });
 
 
-// 🚩 remove
+// 🍑 remove
 Route::get('/remove', function () {
     return view('/closure/remove_form');
 });
