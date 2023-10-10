@@ -15,8 +15,10 @@ return new class extends Migration
         Schema::create('ichibans', function (Blueprint $table) {
 
             // 추가할 칼럼들
-            $table->id(); // UnsignedBigInt 타입의 auto_increment primary key id 컬럼 생성해 준다
-
+            $table->id(); // UnsignedBigInt 타입의 자동증가(auto_increment) 기본키(primary key) id 컬럼 생성해 준다, 일반적으로 기본키(primary key)로 사용됨
+            $table->string("name");
+            $table->string("gender");
+            $table->string("email");
             $table->timestamps(); // datatime 데이타 타입으로 create_at , update_at이라는 두 개의 칼럼을 만들어준다
         });
     }
