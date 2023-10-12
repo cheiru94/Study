@@ -14,8 +14,13 @@ return [
     | you may use many connections at once using the Database library.
     |
     */
-
-    'default' => env('DB_CONNECTION', 'mysql'),
+            // env는 도우미 함수 : .env파일에 있는 환경변수를 읽어온다. 
+    'default' => env('DB_CONNECTION', 'mysql'),  // 기본적으로 사용할 데이터베이스 연결을 설정
+    /* 
+       DB_CONNECTION이라는 값을 .env 파일에서 읽어온나,
+       근데 만약에 DB_CONNECTION이라는 환경변수가 여기 정의되어 있지 않으면 
+       mysql 쓸꺼데이~ 라는 뜻 
+    */
 
     /*
     |--------------------------------------------------------------------------
@@ -33,24 +38,27 @@ return [
     |
     */
 
-    'connections' => [
 
-        'sqlite' => [
-            'driver' => 'sqlite',
-            'url' => env('DATABASE_URL'),
+    /* 라라벨 자체에서 제공해주는 DB에 대한 정보들  */
+    'connections' => [ // 각각의 데이터베이스 연결에 대한 설정들
+
+        'sqlite' => [ // SQLite
+            'driver' => 'sqlite', // 사용할 PDO 드라이버 이름
+            'url' => env('DATABASE_URL'), // 데이터베이스 접속 URL
             'database' => env('DB_DATABASE', database_path('database.sqlite')),
             'prefix' => '',
             'foreign_key_constraints' => env('DB_FOREIGN_KEYS', true),
         ],
 
-        'mysql' => [
+        // ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
+        'mysql' => [ // MySQL
             'driver' => 'mysql',
             'url' => env('DATABASE_URL'),
-            'host' => env('DB_HOST', '127.0.0.1'),
-            'port' => env('DB_PORT', '3306'),
-            'database' => env('DB_DATABASE', 'forge'),
-            'username' => env('DB_USERNAME', 'forge'),
-            'password' => env('DB_PASSWORD', ''),
+            'host' => env('DB_HOST', '127.0.0.1'), // 데이터베이스 서버의 호스트명 또는 IP 주소
+            'port' => env('DB_PORT', '3306'), // 데이터베이스 서버의 포트 번호
+            'database' => env('DB_DATABASE', 'forge'), // 사용할 데이터베이스 이름
+            'username' => env('DB_USERNAME', 'forge'), // 해당하는 계정 정보
+            'password' => env('DB_PASSWORD', ''),  // 해당하는 계정 정보
             'unix_socket' => env('DB_SOCKET', ''),
             'charset' => 'utf8mb4',
             'collation' => 'utf8mb4_unicode_ci',
@@ -63,7 +71,7 @@ return [
             ]) : [],
         ],
 
-        'pgsql' => [
+        'pgsql' => [  //  PostgreSQL
             'driver' => 'pgsql',
             'url' => env('DATABASE_URL'),
             'host' => env('DB_HOST', '127.0.0.1'),
@@ -78,7 +86,7 @@ return [
             'sslmode' => 'prefer',
         ],
 
-        'sqlsrv' => [
+        'sqlsrv' => [  //  SQL Server
             'driver' => 'sqlsrv',
             'url' => env('DATABASE_URL'),
             'host' => env('DB_HOST', 'localhost'),
@@ -99,7 +107,8 @@ return [
     |--------------------------------------------------------------------------
     | Migration Repository Table
     |--------------------------------------------------------------------------
-    |
+    |'migrations' 배열은 Laravel의 마이그레이션 시스템에서 사용하는 테이블 이름을 정의합니다. 
+    |  이 테이블은 어떤 마이그레션 작업들을 이미 실행했는지를 추적하기 위해 사용
     | This table keeps track of all the migrations that have already run for
     | your application. Using this information, we can determine which of
     | the migrations on disk haven't actually been run in the database.
