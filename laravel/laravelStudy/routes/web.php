@@ -1,9 +1,7 @@
 <?php
 
-use App\Http\Controllers\UserController;
-use Illuminate\Http\Request;
+use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
-
 
 /*
 |--------------------------------------------------------------------------
@@ -16,13 +14,18 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::get('/', function () {
+    return view('welcome');
+});
 
-//get방식으로 / url로 요청이 들오면 return 안의 views안에 있는 welcome.blade.php라는 파일을 실행시켜 준다.  .blade.php는 생략 가능
-Route::get('/', function () {  // Route:: 이게 '파사드' 라는 문법
-    return view('welcome');  // view(헬퍼함수=도우미 함수) :  1)view파일을 로드하고  2)해당 뷰에 데이터를 전달하는 역할
-});                          // 웹 애플리케이션의 응답으로 사용자에게 보여질 화면을 생성하는데 사용
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');
 
+Route::middleware('auth')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+});
 
-/* 🍑 리소스 컨트롤러 라우터 🍑 */
-Route::resource('/users',UserController::class);
-//                 ⬆ 이 부분만 작성하면 알아서 라우팅 해준다.
+require __DIR__.'/auth.php';

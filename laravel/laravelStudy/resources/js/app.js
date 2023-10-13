@@ -1,16 +1,7 @@
 import './bootstrap';
 
-/* 스캐폴딩  Inertia , react 가져오기 */
-// import { InertiaApp } from '@inertiajs/inertia-react' // 🍑　Inertia 
-// import React from 'react'　// 🍑　Inertia 
-// import { render } from 'react-dom'
+import Alpine from 'alpinejs';
 
-// const el = document.getElementById('app')
+window.Alpine = Alpine;
 
-// render(
-//   <InertiaApp
-//     initialPage={JSON.parse(el.dataset.page)}
-//     resolveComponent={name => require(`./Pages/${name}`).default}
-//   />,
-//   el
-// )
+Alpine.start();
