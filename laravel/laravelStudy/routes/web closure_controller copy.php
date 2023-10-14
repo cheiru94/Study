@@ -42,7 +42,7 @@ Route::get('/register', function () {
 // post 요청 (t버튼을 눌르면 submit기능에 의해)
 Route::post('/register', function (Request $req) {
     //    $name = $req ->all(); // 토큰 포함 전부 출력
-    $name = $req->except('_token'); // 토큰 제외 출력
+    $name = $req->except('_token'); // 🟢 토큰 제외 출력
     return view('/closure/register', ['result' => $name]);
 });
 
