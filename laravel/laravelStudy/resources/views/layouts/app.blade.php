@@ -12,7 +12,7 @@
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 
         <!-- Scripts -->
-        @vite(['resources/css/app.css', 'resources/js/app.js'])
+        @vite(['resources/css/app.css', 'resources/js/app.js']){{-- 이 코드에 의해서, 각 페이지에 컴파일이 끝난 테일윈드 스타일이 반영된다. --}}
     </head>
     <body class="font-sans antialiased">
         <div class="min-h-screen bg-gray-100">
