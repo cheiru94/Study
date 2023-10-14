@@ -3,7 +3,7 @@
 //App\Http\Middleware; : 이 부분은 현재 파일이 어떤 네임스페이스에 속해 있는지를 정의합니다. 여기서는 App\Http\Middleware라는 네임스페이스에 속해 있다고 선언되었습니다.
 namespace App\Http\Middleware;
 
-// 이 부분은 이 파일에서 사용할 다른 클래스나 함수 등을 불러오기 위한 것
+// 이 부분은 이 파일에서 사용할 다른 클래스나 함수 등을 불러오기 위한 것 // 컨트롤러의 장소를 넣는 곳
 use App\Providers\RouteServiceProvider;
 use Closure;
 use Illuminate\Http\Request;
