@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\TestController; // 각각의 컨트롤러 마다 다 해줘야한다!! 잊지마라!!
 
 /*
 |--------------------------------------------------------------------------
@@ -13,6 +14,9 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+
+Route::get('test',[TestController::class,'test'])
+ ->name('test');
 
 Route::get('/', function () {
     return view('welcome');
