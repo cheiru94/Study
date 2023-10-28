@@ -13,7 +13,7 @@ return new class extends Migration
     {
         // 테이블 이름 contact_forms
         Schema::create('contact_forms', function (Blueprint $table) {
-            $table->id();
+            $table->id(); //속성에는 unsigned라고 되어있는데 마이너스는 안된다는 의미다
             $table->string('name',20); // 이름 
             $table->string('email', 255); // 이메일
             $table->longText('url')->nullable(); // url 내용  -> 라라벨은 기본 null을 허용하지 않아, 허용 처리 해줌
