@@ -32,6 +32,7 @@ Route::prefix('contacts')  // 이후에 정의될 라우트의 URL 앞에 '/cont
     ->name('contacts.') // 이후에 정의될 라우트의 이름 앞에 'contacts.'를 자동으로 추가
     ->group(function(){ // 이후에 정의될 라우트들을 그룹으로 묶는다. 그룹으로 묶으면 그룹 전체에 공통적으로 적용할 설정을 한 번에 할 수 있다.
     Route::get('/','index')->name('index');
+    Route::get('/create','create')->name('create');
 });
 
 
