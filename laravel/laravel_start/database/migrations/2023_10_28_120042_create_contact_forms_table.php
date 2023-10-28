@@ -11,8 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
+        // 테이블 이름 contact_forms
         Schema::create('contact_forms', function (Blueprint $table) {
             $table->id();
+            $table->string('name',20); // 이름 
+            $table->string('email', 255); // 이메일
+            $table->longText('url')->nullable(); // url 내용  -> 라라벨은 기본 null을 허용하지 않아, 허용 처리 해줌
+            $table->boolean('gender'); // 성별
+            $table->tinyInteger('age'); // 나이
+            $table->string('contact', 200); // 문의(contact) 내용
             $table->timestamps();
         });
     }
