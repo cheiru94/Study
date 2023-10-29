@@ -12,8 +12,9 @@
                     
                     {{-- form 내용 --}}
                     <section class="text-gray-600 body-font relative">
-                        <form action="post" action="">
+                        <form method="post" action="{{ route('contacts.store') }}">  {{-- Route::post('/','store')->name('store'); --}}
                             @csrf
+                            
                             <div class="container px-5  mx-auto">
                                 <div class="lg:w-1/2 md:w-2/3 mx-auto">
                                     <div class="flex flex-wrap -m-2">
