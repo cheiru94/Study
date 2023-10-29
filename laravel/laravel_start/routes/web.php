@@ -33,6 +33,8 @@ Route::prefix('contacts')  // 이후에 정의될 라우트의 URL 앞에 '/cont
     ->group(function(){ // 이후에 정의될 라우트들을 그룹으로 묶는다. 그룹으로 묶으면 그룹 전체에 공통적으로 적용할 설정을 한 번에 할 수 있다.
     Route::get('/','index')->name('index');
     Route::get('/create','create')->name('create');
+    Route::post('/','store')->name('store');
+    //POST    contacts .....  contacts.store › ContactFormController@store
 });
 
 
