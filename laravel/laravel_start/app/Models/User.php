@@ -17,7 +17,7 @@ class User extends Authenticatable
      *
      * @var array<int, string>
      */
-    protected $fillable = [
+    protected $fillable = [  //여기에 작성되어 있는 내용은 데이터베이스에 등록이 가능하다 
         'name',
         'email',
         'password',
