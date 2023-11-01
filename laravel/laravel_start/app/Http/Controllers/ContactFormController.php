@@ -13,7 +13,8 @@ class ContactFormController extends Controller
     public function index()
     {
         //
-        return view('contacts.index');
+        $contacts = ContactForm::select('id','name','title','created_at')->get();
+        return view('contacts.index',compact('contacts')); // 이렇게 적으면 위의 변수 $contacts를 전달할 수 있다.  
     }
 
     /**
