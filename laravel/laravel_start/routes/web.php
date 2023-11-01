@@ -34,6 +34,7 @@ Route::prefix('contacts')  // 이후에 정의될 라우트의 URL 앞에 '/cont
     Route::get('/','index')->name('index'); //   🔸 get :  /contacts  , 🔹 라우터명 : contacts.
     Route::get('/create','create')->name('create');//   🔸 get :  /contacts/create    , 🔹 라우터명 : contacts.create
     Route::post('/','store')->name('store');//   🔸 post  :  /contacts/      ,  🔹 라우터명 : contacts.store
+    Route::get('{id}','show')->name('show'); //  🔸 get :  /contacts/{id}  , 🔹 라우터명 : contacts.show
     //POST    contacts .....  contacts.store › ContactFormController@store
 });
 
