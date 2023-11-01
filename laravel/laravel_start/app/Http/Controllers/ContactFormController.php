@@ -23,7 +23,7 @@ class ContactFormController extends Controller
     public function create()
     {
         //
-        return view('contacts.create');
+        return view('contacts.create'); // contacts 폴더의 create 뷰 파일을 반환해라
     }
 
     /**
