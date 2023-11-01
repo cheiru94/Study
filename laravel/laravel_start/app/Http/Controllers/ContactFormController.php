@@ -31,8 +31,8 @@ class ContactFormController extends Controller
      */
     public function store(Request $request)
     {
-        //
-        // dd($request , $request-> name); // 리퀘스트로 받은 내용들을 검사해서 출력 
+        // dd($request); // $request 만으로 폼에 입력한 정보가 들어있다.  -> request 안에  parameters에 폼에 입력한 정보들이 들어있음
+        dd($request , $request-> name); // 리퀘스트로 받은 내용들을 검사해서 출력 
 
         // 변수는 따로 지정해 주지 않아도 된다. => 여기에 작성된 내용은 ContactForm 모델의 $fillable에 지정되어 있어야 한다. 
         ContactForm::create([ // ContactForm 모델 인스턴스를 데이터베이스에 저장
