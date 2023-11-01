@@ -21,21 +21,23 @@
                         <table class="table-auto w-full text-left whitespace-no-wrap">
                             {{-- 테이블 head --}}
                           <thead>
-                            <tr>
+                            <tr class="text-center">
                               <th class="px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100 rounded-tl rounded-bl">계정</th>
                               <th class="px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100">성명</th>
                               <th class="px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100">문의사항</th>
                               <th class="px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100">등록일</th>
+                              <th class="px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100">상세</th>
                             </tr>
                           </thead>
                           {{-- 테이블 내용 --}}
                           <tbody>
                             @foreach ($contacts as $contact)
-                                <tr>
+                                <tr class="text-center">
                                   <td class="border-t-2 border-gray-200 px-4 py-3">{{$contact->id}}</td>
                                   <td class="border-t-2 border-gray-200 px-4 py-3">{{$contact->name}}</td>
                                   <td class="border-t-2 border-gray-200 px-4 py-3">{{$contact->title}}</td>
                                   <td class="border-t-2 border-gray-200 px-4 py-3 text-lg text-gray-900">{{$contact->created_at}}</td>
+                                  <td class="border-t-2 border-gray-200 px-4 py-3 text-lg text-gray-900"><a href="{{route('contacts.show',['id'=>$contact->id])}}">🔍</a></td>
                                 </tr>
                             @endforeach
                           </tbody>
