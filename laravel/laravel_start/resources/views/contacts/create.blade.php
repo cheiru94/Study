@@ -1,5 +1,7 @@
+{{-- 신규작성 페이지 --}}
 <x-app-layout>
     <x-slot name="header">
+        {{-- 신규작성 제목글  --}}
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
             신규 작성
         </h2>
