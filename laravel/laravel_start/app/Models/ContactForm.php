@@ -26,4 +26,6 @@ class ContactForm extends Model
         'age',
         'contact',
     ];
+
+    //protected $guarded // 지정한 칼럼 제외하고 입력 가능
 }
