@@ -56,10 +56,21 @@ class ContactFormController extends Controller
      */
     public function show(string $id)
     {
-        //
+        // 해당 id에 맞는 레코드를 가져옴 
         $contact = ContactForm::find($id);
 
-        return view('contacts.show', compact('contact'));
+        // 성별 체크
+        $contact->gender ===0?$gender = '남자':$gender = '여자'; // $gender는 compact함수에서 넘겨주자
+
+        // 나이체크
+        if($contact -> age===1) {$age = '~19살';}   // $age는 compact함수에서 넘겨주자
+        if($contact -> age===2) {$age = '20살~29살';}
+        if($contact -> age===3) {$age = '30살~39살';}
+        if($contact -> age===4) {$age = '40살~49살';}
+        if($contact -> age===5) {$age = '50살~59살';}
+        if($contact -> age===6) {$age = '60살~';}
+        
+        return view('contacts.show', compact('contact','gender','age'));
     }
 
     /**
