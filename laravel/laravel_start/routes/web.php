@@ -36,7 +36,8 @@ Route::prefix('contacts')  // 이후에 정의될 라우트의 URL 앞에 '/cont
     Route::post('/','store')->name('store');//   🔸 post  :  /contacts/      ,  🔹 라우터명 : contacts.store
     Route::get('{id}','show')->name('show'); //  🔸 get :  /contacts/{id}  , 🔹 라우터명 : contacts.show
     Route::get('/{id}/edit','edit')->name('edit');//  🔸 get :  /contacts/{id}/edit  , 🔹 라우터명 : contacts.edit
-    Route::post('/{id}','update')->name('update');
+    Route::put('/{id}','update')->name('update');//🔸 put :  /contacts/{id}  , 🔹 라우터명 : contacts.update
+    Route::delete('/{id}/destroy','destroy'); //🔸 delete :  /contacts/{id}/destroy  , 🔹 라우터명 : contacts.destroy
 });
 
   
