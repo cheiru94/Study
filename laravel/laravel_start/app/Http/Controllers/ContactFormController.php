@@ -81,7 +81,7 @@ class ContactFormController extends Controller
         //
         $contact = ContactForm::find($id); // id 값으로 넘어온 값의 한줄의 레코드를 찾아서 반환해라 
 
-        return view('contacts.edit',compact('contact'));
+        return view('contacts.edit',compact('contact')); // id 값도 edit.blade.php 파일에서 사용할 수 있다
     }
 
     /**
