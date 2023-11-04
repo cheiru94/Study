@@ -90,6 +90,18 @@ class ContactFormController extends Controller
     public function update(Request $request, string $id)
     {
         //
+        $contact = ContactForm::find($id);
+
+        $contact->name = $request->name; // 데이터 베이스안의 정보 = 입력 받은 값 
+        $contact->title = $request->title;
+        $contact->email = $request->email;
+        $contact->url = $request->url;
+        $contact->gender = $request->gender;
+        $contact-> age= $request->age;
+        $contact->contact = $request->contact;
+        $contact->save(); // 변경한 값들 저장 (수정 후 반드시 저장해야 내용이 변경된다)
+
+        return to_route('contacts.index');
     }
 
     /**
