@@ -15,9 +15,9 @@
                     {{-- form 내용 --}}
                     <section class="text-gray-600 body-font relative">
 
-                        <form method="post" action="{{ route('contacts.update',['id'=>$contact->id]) }}">  {{-- Route::post('/','store')->name('store'); --}}
+                        <form method="post" action="{{ route('contacts.update',['id'=>$contact->id]) }}">  {{-- compact로 값을  --}}
                             @csrf
-                            
+                            @method('put')
                             <div class="container px-5  mx-auto">
                                 <div class="lg:w-1/2 md:w-2/3 mx-auto">
                                     <div class="flex flex-wrap -m-2">
