@@ -79,6 +79,9 @@ class ContactFormController extends Controller
     public function edit(string $id)
     {
         //
+        $contact = ContactForm::find($id); // id 값으로 넘어온 값의 한줄의 레코드를 찾아서 반환해라 
+
+        return view('contacts.edit',compact('contact'));
     }
 
     /**
