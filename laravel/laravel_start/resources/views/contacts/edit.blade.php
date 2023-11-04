@@ -15,7 +15,7 @@
                     {{-- form 내용 --}}
                     <section class="text-gray-600 body-font relative">
 
-                        <form method="post" action="{{ route('contacts.store') }}">  {{-- Route::post('/','store')->name('store'); --}}
+                        <form method="post" action="{{ route('contacts.update',['id'=>$contact->id]) }}">  {{-- Route::post('/','store')->name('store'); --}}
                             @csrf
                             
                             <div class="container px-5  mx-auto">
@@ -88,7 +88,7 @@
 
                                         {{-- 신규 등록 신청 --}}
                                         <div class="p-2 w-full">
-                                            <button class="flex mx-auto text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg">신규 등록 신청</button>
+                                            <button text-whi class="flex mx-aute  text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg">변경</button>
                                         </div>
                                     </div>
                                 </div>
