@@ -73,9 +73,11 @@
                                   {{-- 주의 사항에 동의 => 동의 한 부분이기 떄문에 별도로 표시하지 않는다--}}
                                   
                                   {{-- 신규 등록 신청 --}}
+                                  <form method="GET" action="{{route('contacts.edit',['id'=>$contact->id])}}">
                                   <div class="p-2 w-full">
-                                      <button class="flex mx-auto text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg">신규 등록 신청</button>
+                                      <button class="flex mx-auto text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg">편집</button>
                                   </div>
+                                </form>
                               </div>
                           </div>
                       </div>
