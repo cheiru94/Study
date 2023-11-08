@@ -109,9 +109,9 @@ class ContactFormController extends Controller
      */
     public function destroy(string $id)
     {
-        //delete( ) 함수로 저장된 데이터를 삭제할 수 있다.
+       
         $contact = ContactForm::find($id);
-        $contact->delete();
+        $contact->delete();  // 🍑 delete( ) 함수 🍑 로 저장된 데이터를 삭제할 수 있다.
 
         return to_route('contacts.index');
     }
