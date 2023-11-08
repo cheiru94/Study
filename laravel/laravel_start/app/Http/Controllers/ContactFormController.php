@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\ContactForm; // ContactForm 불러와 사용한다고 use 해주기
 use Illuminate\Http\Request;
+use App\Models\CheckFormService;
+use App\Service\CheckFormService as ServiceCheckFormService;
 
 class ContactFormController extends Controller
 {
@@ -60,15 +62,10 @@ class ContactFormController extends Controller
         $contact = ContactForm::find($id);
 
         // 성별 체크
-        $contact->gender ===0?$gender = '남자':$gender = '여자'; // $gender는 compact함수에서 넘겨주자
+        ServiceCheckFormService::checkGender($contact);
 
         // 나이체크
-        if($contact -> age===1) {$age = '~19살';}   // $age는 compact함수에서 넘겨주자
-        if($contact -> age===2) {$age = '20살~29살';}
-        if($contact -> age===3) {$age = '30살~39살';}
-        if($contact -> age===4) {$age = '40살~49살';}
-        if($contact -> age===5) {$age = '50살~59살';}
-        if($contact -> age===6) {$age = '60살~';}
+        ServiceCheckFormService::checkAge($contact);
         
         return view('contacts.show', compact('contact','gender','age'));
     }

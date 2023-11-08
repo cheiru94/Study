@@ -11,11 +11,15 @@ class CheckFormService {
   }
   public static function checkAge($data){    
           // 나이체크
-          if($data -> age===1) {$age = '~19살';}   // $age는 compact함수에서 넘겨주자
-          if($data -> age===2) {$age = '20살~29살';}
-          if($data -> age===3) {$age = '30살~39살';}
-          if($data -> age===4) {$age = '40살~49살';}
-          if($data -> age===5) {$age = '50살~59살';}
-          if($data -> age===6) {$age = '60살~';}
+        if($data -> age===1) {$age = '~19살';}   // $age는 compact함수에서 넘겨주자
+        if($data -> age===2) {$age = '20살~29살';}
+        if($data -> age===3) {$age = '30살~39살';}
+        if($data -> age===4) {$age = '40살~49살';}
+        if($data -> age===5) {$age = '50살~59살';}
+        if($data -> age===6) {$age = '60살~';}
+        
+        return $age;
   }
 }
+
+/* 메서드 안의 동작은 컨트롤러와 같은데 코드를 이렇게 분리해 놓으면 컨트롤러가 깔끔해 진다. */

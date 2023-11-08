@@ -96,15 +96,15 @@
           </div>
         </div>
       </div>
-    </div>
+    </div> 
 
     {{-- 자바스크립트 --}}
     <script>
       function deletePost(e){
-      'use strict' 
-      if(confirm('진짜 지워도 괜찮나?')){
-         document.getElementById('delete_' + e.dataset.id).submit() 
-      }
+        'use strict' 
+        if(confirm('진짜 지워도 괜찮나?')){
+          document.getElementById('delete_' + e.dataset.id).submit() 
+        }
       } 
     </script>
 
