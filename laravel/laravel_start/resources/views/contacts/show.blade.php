@@ -84,7 +84,8 @@
                           @csrf
                           @method('delete')
                           <div class="p-2 w-full ">
-                              <a href="#" data-id="{{ $contact->id }}" onclick="deletePost(this)" class="flex mx-auto text-white bg-pink-500 border-0 py-2 px-8 focus:outline-none hover:bg-pink-600 rounded text-lg">삭제</a>
+                            {{--  this는 현재 이벤트가 발생하고 있는 HTML 요소, 즉 클릭 이벤트가 발생한 <a> 태그 --}}
+                            <a href="#" data-id="{{ $contact->id }}" onclick="deletePost(this)" class="flex mx-auto text-white bg-pink-500 border-0 py-2 px-8 focus:outline-none hover:bg-pink-600 rounded text-lg">삭제</a>
                           </div>
                         </form>
                     </div>
@@ -100,10 +101,10 @@
 
     {{-- 자바스크립트 --}}
     <script>
-      function deletePost(e){
-        'use strict' 
-        if(confirm('진짜 지워도 괜찮나?')){
-          document.getElementById('delete_' + e.dataset.id).submit() 
+      function deletePost(e){ //e는 onclick에 함수의 인수 -> 위에서 this가 들어온다
+        'use strict'  // JavaScript 코드를 엄격 모드(strict mode)로 실행하라는 지시어
+        if(confirm('진짜 지워도 괜찮나?')){ // confirm 메서드는 true / false 를 반환한다
+          document.getElementById('delete_' + e.dataset.id).submit()  // data-id="{{ $contact->id }} 에 설정되어 있는 값  // .submit()  보냄 , 실행함
         }
       } 
     </script>

@@ -2,10 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\ContactForm; // ContactForm 불러와 사용한다고 use 해주기
 use Illuminate\Http\Request;
-use App\Models\CheckFormService;
-use App\Service\CheckFormService as ServiceCheckFormService;
+use App\Models\ContactForm; // ContactForm 불러와 사용한다고 use 해주기
+use App\Services\CheckFormService;
 
 class ContactFormController extends Controller
 {
@@ -58,14 +57,14 @@ class ContactFormController extends Controller
      */
     public function show(string $id)
     {
-        // 해당 id에 맞는 레코드를 가져옴 
+        // 1. 🟡 해당 id에 맞는 레코드를 가져옴  -> 한 줄의 레코드를 반환한다. 
         $contact = ContactForm::find($id);
 
-        // 성별 체크
-        ServiceCheckFormService::checkGender($contact);
+        // 2. 🟡 성별 체크    ::는 정적 메서드나 프로퍼티에 접근할 때 사용하는 연산자
+        $gender = CheckFormService::checkGender($contact);  // static으로 설정해 놓았기 떄문에 :: 이렇게 바로 사용가능하다.
 
-        // 나이체크
-        ServiceCheckFormService::checkAge($contact);
+        // 3. 🟡 나이 체크
+        $age = CheckFormService::checkAge($contact);
         
         return view('contacts.show', compact('contact','gender','age'));
     }

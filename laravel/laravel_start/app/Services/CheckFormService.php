@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Service;
+namespace App\Services; // 이게 잘못 작성되면 다른 곳에서 불러 사용할 때 에러가 발생한다.
 
 
 /* 컨트롤러에 내용이 많아지면 이렇게 폴더를 하나 파서 각 파일에 class를 만들고 메서드 형식으로 사용하자 */
 class CheckFormService {
-  public static function checkGender($data){
+  public static function checkGender($data){ //  🟢 static으로 해놓으면 나중에 :: 으로 바로 사용할 수 있다
      // 성별 체크
      $data->gender ===0?$gender = '남자':$gender = '여자'; // $gender는 compact함수에서 넘겨주자
   }
