@@ -12,12 +12,16 @@
                      index<br>
                      {{-- web.php에서 라우터에 이름을 앞에는 contacts. 하고 /contacts/create 경로의 name에는 create라고 지정해 놓았었음 
                         prefix('contacts') 라도고 지정해 두었다 -> url 경로 앞에는 무조건 contacts붙게.--}}
-                     <a href="{{route('contacts.create')}}" class="text-blue-500">신규등록</a>
+                     <a href="{{route('contacts.create')}}" class="text-blue-500">신규등록</a><br>
+                     <form class="mb-8" action="{{route('contacts.index')}}" method="get">
+                      <input type="text" name="search" placeholder="검색">
+                      <button class=" text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg">검색하기</button>
+                    </form>
 
                      
 
                     {{-- 테이블 --}}
-                     <div class="lg:w-2/3 w-full mx-auto overflow-auto">
+                     <div class="lg:w-3/3 w-full mx-auto overflow-auto">
                         <table class="table-auto w-full text-left whitespace-no-wrap">
                             {{-- 테이블 head --}}
                           <thead>
@@ -43,7 +47,10 @@
                           </tbody>
                         </table>
                       </div>
-
+                      
+                      <div class="mt-6 flex justify-center items-center">
+                      {{$contacts->links()}}
+                     </div>
 
                 </div>
             </div>
