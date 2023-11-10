@@ -17,6 +17,7 @@ class UserFactory extends Factory
      */
     public function definition(): array
     {
+      // '키' => 벨류
         return [
             'name' => fake()->name(),
             'email' => fake()->unique()->safeEmail(),
