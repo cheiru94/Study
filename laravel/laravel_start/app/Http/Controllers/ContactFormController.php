@@ -13,10 +13,20 @@ class ContactFormController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()  // contacts폴더 안의 index.blade.php 파일로 내용을 전송한다
+    public function index(Request $request)  // contacts폴더 안의 index.blade.php 파일로 내용을 전송한다
     {
         // get() 메서드를 호출하지 않은 경우, 실제 쿼리는 데이터베이스에서 실행되지 않는다.
-        $contacts = ContactForm::select('id','name','title','created_at')->get(); // get() 메서드는 데이터베이스에서 쿼리를 실행하고, 결과를 컬렉션 형태로 반환
+        // $contacts = ContactForm::select('id','name','title','created_at')->get(); // get() 메서드는 데이터베이스에서 쿼리를 실행하고, 결과를 컬렉션 형태로 반환
+        
+        // 🟡 19번 라인 내용을 페이지 네이션 처리
+        // $contacts = ContactForm::select('id','name','title','created_at')->paginate(5); 
+
+
+        $search = $request->search;
+        $query = ContactForm::search($search);
+
+        $contacts = $query->select('id','name','title','created_at')->paginate(10); 
+        
         return view('contacts.index',compact('contacts')); // 이렇게 적으면 위의 변수 $contacts를 전달할 수 있다. 🩵 compact함수는 변수 이름을 입력으로 받아, 그 이름을 가진 변수의 이름과 값을 가진 배열을 생성해 반환
     }
 
@@ -117,4 +127,6 @@ class ContactFormController extends Controller
 
         return to_route('contacts.index');
     }
+
+    
 }
