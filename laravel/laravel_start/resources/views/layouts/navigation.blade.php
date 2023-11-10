@@ -19,7 +19,7 @@
 
                     {{-- 문의사항 보기 네이베이션  추가  --}}
                     <x-nav-link :href="route('contacts.index')" :active="request()->routeIs('contacts.index')">
-                        문의사항 보기
+                        문의사항
                     </x-nav-link>
 
 

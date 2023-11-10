@@ -2,6 +2,9 @@
     <!-- Session Status -->
     <x-auth-session-status class="mb-4" :status="session('status')" />
 
+    <!-- 유효성 검사 에러 (내가 추가한 부분) -->
+   <x-auth-validation-errors class="mb-4" :errors="$errors"/>
+
     <form method="POST" action="{{ route('login') }}">
         @csrf
 
