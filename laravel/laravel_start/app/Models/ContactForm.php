@@ -33,4 +33,16 @@ class ContactForm extends Model
     ];
 
     //protected $guarded // 지정한 칼럼 제외하고 입력 가능
+
+    // 메서드 이름 맨 앞에 scope 붙이기 ,첫 번째 인수는 $query、두 번째 인수에 전해져 오는 인수 
+    public function scopeSearch($query, $search)
+    {
+      if($search !== null){
+        $search_split = mb_convert_kana($search, 's'); // 일본어인 경우 전각 스페이스를 반각 
+        $search_split2 = preg_split('/[\s]+/', $search_split); //공백 따개기
+      foreach( $search_split2 as $value ){
+      $query->where('name', 'like', '%' .$value. '%'); } 
+    }
+    return $query;
+    } 
 }
