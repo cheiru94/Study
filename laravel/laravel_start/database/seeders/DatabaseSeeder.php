@@ -12,6 +12,13 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+
+      // 이렇게 해줘야 추가 된다.
+      $this->call([
+        TestSeeder::class,
+        UserSeeder::class,
+      ]);
+      
         // \App\Models\User::factory(10)->create();
 
         // \App\Models\User::factory()->create([
