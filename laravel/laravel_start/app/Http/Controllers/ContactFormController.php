@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\ContactForm; // ContactForm 불러와 사용한다고 use 해주기
 use App\Services\CheckFormService;
+use App\Http\Requests\StoreContactRequest;
+use App\Http\Requests\UpdateContactRequest;
 
 class ContactFormController extends Controller
 {
@@ -30,7 +32,11 @@ class ContactFormController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+
+    // 🧡🧡 StoreContactRequest는 유효성 검사가 완료된 것이기 때문에 Request객체 대신 기입한다 🧡🧡
+    // 간단하게 작성한다고 하면 그냥 Request객체를 바로 사용해도 되지만, 
+    // 조금 길어질 것 같은 경우에는 별도로 Request 클래스를 하나 만들어서 다른파일에서 만들어 사용하자, 
+    public function store(StoreContactRequest $request)  // 🟡POST 메서드 
     {
         // dd($request); // $request 만으로 폼에 입력한 정보가 들어있다.  -> request 안에  parameters에 폼에 입력한 정보들이 들어있음
         // dd($request , $request-> name); // 리퀘스트로 받은 내용들을 검사해서 출력 
@@ -55,7 +61,7 @@ class ContactFormController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(string $id) 
     {
         // 1. 🟡 해당 id에 맞는 레코드를 가져옴  -> 한 줄의 레코드를 반환한다. 
         $contact = ContactForm::find($id);
@@ -83,7 +89,7 @@ class ContactFormController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(UpdateContactRequest $request, string $id) // 🟡POST 메서드 
     {
         //
         $contact = ContactForm::find($id);
