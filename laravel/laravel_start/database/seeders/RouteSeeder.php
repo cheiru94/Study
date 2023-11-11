@@ -14,5 +14,10 @@ class RouteSeeder extends Seeder
     public function run(): void
     {
         //
+        DB::table('routes')->insert([
+          [ 'name' => '山手線', 'sort_no' => 1 ],
+          [ 'name' => '京浜東北線', 'sort_no' => 2 ], 
+          [ 'name' => '東武東上線', 'sort_no' => 3 ],
+          ]);
     }
 }
