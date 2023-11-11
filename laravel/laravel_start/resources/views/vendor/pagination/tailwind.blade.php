@@ -23,6 +23,8 @@
         </div>
 
         <div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
+
+          {{-- 🟢 글자 출력하는 부분 --}}
             {{-- <div>
                 <p class="text-sm text-gray-700 leading-5">
                     {!! __('Showing') !!}
