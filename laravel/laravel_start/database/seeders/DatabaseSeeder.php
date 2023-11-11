@@ -17,6 +17,9 @@ class DatabaseSeeder extends Seeder
       $this->call([
         TestSeeder::class,
         UserSeeder::class,
+
+        AreaSeeder::class, // 🟢 반드시 부모를 먼저 앞에서 만들어줘야 한다
+        ShopSeeder::class,
       ]);
       
       /* 🟡 factory 추가  */
