@@ -18,15 +18,17 @@ class ContactFormController extends Controller
         // get() 메서드를 호출하지 않은 경우, 실제 쿼리는 데이터베이스에서 실행되지 않는다.
         // $contacts = ContactForm::select('id','name','title','created_at')->get(); // get() 메서드는 데이터베이스에서 쿼리를 실행하고, 결과를 컬렉션 형태로 반환
         
-        // 🟡 19번 라인 내용을 페이지 네이션 처리
+        // 🟡 19번 라인 내용을 페이지 네이션 처리 
         // $contacts = ContactForm::select('id','name','title','created_at')->paginate(5); 
 
 
-        $search = $request->search;
-        $query = ContactForm::search($search);
+        $search = $request->search;  // 키워드 ===  name="search" 를 뽑아온다. 들어있는 키워드 뽑아 올 수 있음
+        $query = ContactForm::search($search); // 🟡 search() 메서드는 모델에서 scopeSearch 메서드에서 앞부분 scope 만 때어서 사용
 
+        // 22번 라인의 내용을 search 처리하기 위해 다시 이렇게 작성
+        // $query에 where 문이 실행되어 있다. 
         $contacts = $query->select('id','name','title','created_at')->paginate(10); // index.blade.php 에서 이 내용을 받는다.
-        
+
         return view('contacts.index',compact('contacts')); 
         // 이렇게 적으면 위의 변수 $contacts를 전달할 수 있다. 
         // 🩵 compact함수는 변수 이름을 입력으로 받아, 그 이름을 가진 변수의 이름과 값을 가진 배열을 생성해 반환
