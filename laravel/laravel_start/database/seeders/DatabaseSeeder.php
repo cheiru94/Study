@@ -20,6 +20,10 @@ class DatabaseSeeder extends Seeder
 
         AreaSeeder::class, // 🟢 반드시 부모를 먼저 앞에서 만들어줘야 한다
         ShopSeeder::class,
+
+
+        RouteSeeder::class, // 부모 부터
+        RouteShopSeeder::class,
       ]);
       
       /* 🟡 factory 추가  */
