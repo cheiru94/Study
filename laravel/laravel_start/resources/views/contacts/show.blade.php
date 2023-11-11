@@ -73,22 +73,26 @@
                         </div>
                         {{-- 주의 사항에 동의 => 동의 한 부분이기 떄문에 별도로 표시하지 않는다--}}
                         
-                        {{-- 신규 등록 신청 --}}
-                        <form method="GET" action="{{route('contacts.edit',['id'=>$contact->id])}}">
-                          <div class="p-2 w-full">
-                              <button class="flex mx-auto text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg">편집</button>
-                          </div>
-                        </form>
+                        <!-- 버튼 중앙 정렬-->
+                        <div class=" w-full flex justify-center"> 
+                            {{-- 🟢 신규 등록 신청 --}}
+                            <form method="GET" action="{{route('contacts.edit',['id'=>$contact->id])}}">
+                              <div class="p-2 w-full">
+                                  <button class="flex mx-auto text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg">편집</button>
+                              </div>
+                            </form>
 
-                        {{-- 🔴 삭제 신청 --}}
-                        <form id="delete_{{$contact->id}}" class="mt-40" method="post" action="{{route('contacts.destroy',['id'=>$contact->id])}}">
-                          @csrf
-                          @method('delete')
-                          <div class="p-2 w-full ">
-                            {{--  this는 현재 이벤트가 발생하고 있는 HTML 요소, 즉 클릭 이벤트가 발생한 <a> 태그 --}}
-                            <a href="#" data-id="{{ $contact->id }}" onclick="deletePost(this)" class="flex mx-auto text-white bg-pink-500 border-0 py-2 px-8 focus:outline-none hover:bg-pink-600 rounded text-lg">삭제</a>
-                          </div>
-                        </form>
+                            {{-- 🔴 삭제 신청 --}}
+                            <form id="delete_{{$contact->id}}" class="" method="post" action="{{route('contacts.destroy',['id'=>$contact->id])}}">
+                              @csrf
+                              @method('delete')
+                              <div class="p-2 w-full ">
+                                {{--  this는 현재 이벤트가 발생하고 있는 HTML 요소, 즉 클릭 이벤트가 발생한 <a> 태그 --}}
+                                <a href="#" data-id="{{ $contact->id }}" onclick="deletePost(this)" class="flex mx-auto text-white bg-pink-500 border-0 py-2 px-8 focus:outline-none hover:bg-pink-600 rounded text-lg">삭제</a>
+                              </div>
+                            </form>
+                        </div>
+
                     </div>
                   </div>
                 </div>
