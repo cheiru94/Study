@@ -39,7 +39,7 @@ class ContactForm extends Model
 
     /* 🟢 Model의 메소드로 정의된 Local Scope 🟢 */
     /*  
-      사용자가 입력한 검색어를 처리해서 데이터베이스 쿼리를 생성하는 로직
+      🟢사용자가 입력한 검색어를 처리해서 데이터베이스 쿼리를 생성하는 로직🟢
       스코프는 일종의 쿼리 필터로, 특정 쿼리 로직을 재사용하기 위해 만들어집니다. 
       즉, 반복적으로 사용되는 쿼리 조건을 메소드로 만들어 코드를 간결하게 만들 수 있습니다. 
       메소드 이름 앞에 'scope'를 붙여서 정의합니다.
@@ -52,6 +52,7 @@ class ContactForm extends Model
         // $search_split = mb_convert_kana($search, 's'); // 일본어인 경우 전각 스페이스를 반각 
         // $search_split2 = preg_split('/[\s]+/', $search_split); //공백 따개기
    
+        // 하나 이상의 연속된 공백 문자를 찾는 정규 표현식 
         $search_split2 = preg_split('/[\s]+/', $search); // 한국어 공백 따개기
 
         //🟢 따개진 검색어 개수 많큼 반복 하면서 단어 확인
@@ -60,7 +61,7 @@ class ContactForm extends Model
         } 
       }
 
-      return $query;
+      return $query; // 생성된 쿼리 반환
     } 
 
 }
