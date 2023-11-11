@@ -73,7 +73,7 @@ class ContactFormController extends Controller
      */
     public function show(string $id) 
     {
-        // 1. 해당 id에 맞는 레코드를 가져옴  -> 한 줄의 레코드를 반환한다. 
+        // 1. 해당 id에 맞는 레코드를 가져옴  -> 한 줄의 레코드를 반환한다. ||  나눈 Service파일 
         $contact = ContactForm::find($id);
 
         /*  🟡 CheckFormService 사용 = 컨트롤러의 내용 분리  🟡  */
