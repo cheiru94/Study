@@ -53,7 +53,7 @@ class ContactFormController extends Controller
 
 
         // 변수는 따로 지정해 주지 않아도 된다. => 여기에 작성된 내용은 ContactForm 모델의 $fillable에 지정되어 있어야 한다. 
-/* $contactForm = */ContactForm::create([ // ContactForm 모델 인스턴스를 데이터베이스에 저장 -> ContactForm 을 불러온다고 위에 use로 작성해주어야 한다 
+        /* $contactForm = */ContactForm::create([ // ContactForm 모델 인스턴스를 데이터베이스에 저장 -> ContactForm 을 불러온다고 위에 use로 작성해주어야 한다 
 
             // form 태그에서 사용자로부터 입력받은 데이터를 뽑아 와서, 이를 기반으로 ContactForm 레코드를 생성한다.
             'name' => $request->name,
@@ -73,9 +73,10 @@ class ContactFormController extends Controller
      */
     public function show(string $id) 
     {
-        // 1. 🟡 해당 id에 맞는 레코드를 가져옴  -> 한 줄의 레코드를 반환한다. 
+        // 1. 해당 id에 맞는 레코드를 가져옴  -> 한 줄의 레코드를 반환한다. 
         $contact = ContactForm::find($id);
 
+        /*  🟡 CheckFormService 사용 = 컨트롤러의 내용 분리  🟡  */
         // 2. 🟡 성별 체크    ::는 정적 메서드나 프로퍼티에 접근할 때 사용하는 연산자
         $gender = CheckFormService::checkGender($contact);  // static으로 설정해 놓았기 떄문에 :: 이렇게 바로 사용가능하다.
 
