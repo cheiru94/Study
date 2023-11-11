@@ -13,6 +13,8 @@ return new class extends Migration
     {
         Schema::create('routes', function (Blueprint $table) {
             $table->id();
+            $table->string('name'); // 지역 이름
+            $table->integer('sort_no'); 
             $table->timestamps();
         });
     }
