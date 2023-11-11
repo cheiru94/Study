@@ -13,6 +13,8 @@ return new class extends Migration
     {
         Schema::create('shops', function (Blueprint $table) {
             $table->id();
+            $table->string('name'); 
+            $table->foreignId('area_id'); // 외래키 : 부모-모델명_id
             $table->timestamps();
         });
     }
