@@ -8,4 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class Route extends Model
 {
     use HasFactory;
+
+    public function shops(){
+      return $this->belongsToMany(Shop::class);
+    }
 }
