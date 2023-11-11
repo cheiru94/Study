@@ -25,9 +25,11 @@ class ContactFormController extends Controller
         $search = $request->search;
         $query = ContactForm::search($search);
 
-        $contacts = $query->select('id','name','title','created_at')->paginate(10); 
+        $contacts = $query->select('id','name','title','created_at')->paginate(10); // index.blade.php 에서 이 내용을 받는다.
         
-        return view('contacts.index',compact('contacts')); // 이렇게 적으면 위의 변수 $contacts를 전달할 수 있다. 🩵 compact함수는 변수 이름을 입력으로 받아, 그 이름을 가진 변수의 이름과 값을 가진 배열을 생성해 반환
+        return view('contacts.index',compact('contacts')); 
+        // 이렇게 적으면 위의 변수 $contacts를 전달할 수 있다. 
+        // 🩵 compact함수는 변수 이름을 입력으로 받아, 그 이름을 가진 변수의 이름과 값을 가진 배열을 생성해 반환
     }
 
     /**
