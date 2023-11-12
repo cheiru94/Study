@@ -146,7 +146,7 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Autoloaded Service Providers
+    | Autoloaded Service Providers  자동 로드 서비스 제공자들
     |--------------------------------------------------------------------------
     |
     | The service providers listed here will be automatically loaded on the
