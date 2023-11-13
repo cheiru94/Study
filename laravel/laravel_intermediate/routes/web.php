@@ -1,7 +1,8 @@
 <?php
 
-use App\Http\Controllers\ProfileController;//コントローラを読み込む
-use Illuminate\Support\Facades\Route;//Routeを読み込む
+use App\Http\Controllers\ProfileController;// 컨트롤러 경로를 통해 불러옴 
+use Illuminate\Support\Facades\Route;// Route를 읽어 들임 
+use App\Http\Controllers\ComponentTestController; // 컨트롤러 경로를 통해 불러옴 
 
 /*
 |--------------------------------------------------------------------------
@@ -21,6 +22,14 @@ Route::get('/', function () {
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
+
+
+// 🟢 ComponentTestController 추가  => 컴포넌트 연습 🟢
+//                경로                  컴포넌트 이름                   메서드 이름 
+Route::get('/component-test1', [ComponentTestController::class, 'showComponent1']);
+Route::get('/component-test2', [ComponentTestController::class, 'showComponent2']);
+
+
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
