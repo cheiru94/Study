@@ -13,6 +13,14 @@
 
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
+
+      <!-- 라라벨 믹스를 사용할 경우 아래와 같이 2가지를 적용시켜 주어야 한다. -->
+        {{-- <!-- Styles -->
+        <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+
+        <!-- Scripts -->
+        <script src="{{ asset('js/app.js') }}" defer></script> --}}
+
     </head>
     <body class="font-sans antialiased">
         <div class="min-h-screen bg-gray-100">

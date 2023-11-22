@@ -8,10 +8,13 @@ class ComponentTestController extends Controller
 {
     //
     public function showComponent1(){
-      return view('test.component-test1');
+      return view('test.component-test1'); //test 폴더 안에 component-test1 파일을 반환
     }
+    
     public function showComponent2(){
-      return view('test.component-test2');
-
+      return view('test.component-test2'); //test 폴더 안에 component-test2 파일을 반환
+    }
+    public function testt(){
+      return view('test.test'); //test 폴더 안에 component-test2 파일을 반환
     }
 }

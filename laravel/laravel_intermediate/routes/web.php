@@ -1,7 +1,7 @@
 <?php
 
-use App\Http\Controllers\ProfileController;// 컨트롤러 경로를 통해 불러옴 
-use Illuminate\Support\Facades\Route;// Route를 읽어 들임 
+use App\Http\Controllers\ProfileController; // 컨트롤러 경로를 통해 불러옴 
+use Illuminate\Support\Facades\Route; // Route를 읽어 들임 
 use App\Http\Controllers\ComponentTestController; // 컨트롤러 경로를 통해 불러옴 
 
 /*
@@ -16,11 +16,11 @@ use App\Http\Controllers\ComponentTestController; // 컨트롤러 경로를 통�
 */
 
 Route::get('/', function () {
-    return view('welcome');
+  return view('welcome');
 });
 
 Route::get('/dashboard', function () {
-    return view('dashboard');
+  return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 
@@ -32,9 +32,9 @@ Route::get('/component-test2', [ComponentTestController::class, 'showComponent2'
 
 
 Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+  Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+  Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+  Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-require __DIR__.'/auth.php'; // 현재 디렉토리의 /auth.php 를 읽어와라 
+require __DIR__ . '/auth.php'; // 현재 디렉토리의 /auth.php 를 읽어와라 
