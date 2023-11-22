@@ -3,6 +3,7 @@
   <div>{{$title}}</div>
   <div>화상</div>
   <div>{{$content}}</div>
+  <div>{{$msg}}</div>
 </div>
 
 
