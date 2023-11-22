@@ -29,8 +29,8 @@ Route::get('/shops', [ShopController::class, 'index']);
 // Route::resource('contacts',ContactFormController::class);
 
 //'contacts'라는 URL에 대한 GET 요청이 오면 ContactFormController의 index 메소드를 실행하라는 뜻
-Route::get('contacts', [ ContactFormController::class, 'index'])->name('contacts.index');
-
+Route::get('contacts', [ ContactFormController::class, 'index'])->name('contacts.index'); 
+// 🟡 name 🟡 이라고 붙여 주면 라우터 정보에 이름을 붙이는 것으로 view측에서 링크를 붙일 떄 이 name 안에 작성한 것을 쓰면되어서 아주 편리해 진다
 
 /* 🍑 미들웨어에서 auth를 적용시켜 주지 않으면 로그인 안 했는데도 http://localhost/contacts에 접근할 수 있게 된다.. */
 Route::prefix('contacts')  // 이후에 정의될 라우트의 URL 앞에 '/contacts'를 자동으로 추가     // => Route::get('list', ...)라는 라우트를 정의하면, 실제 URL은 '/contacts/list'가 됩니다.
