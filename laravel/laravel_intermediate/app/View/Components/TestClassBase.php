@@ -9,6 +9,7 @@ use Illuminate\View\Component;
 class TestClassBase extends Component
 {
 
+  //  변수 정의  -> 이 변수들은 생성자에서 초기화를 시켜주어야 한다. 
   public $classBaseMessage;
   public $defaultMessage;
 
@@ -18,7 +19,7 @@ class TestClassBase extends Component
    */
   public function __construct($classBaseMessage, $defaultMessage = "초기값 설정은 이렇게 가능") // 클래스이기 때문에 construct로 초기화 할 수 있는 부분, 여기에 변수 같은 것을 설정할 수 있다. 
   {
-    //
+    // 변수에 값 대입
     $this->classBaseMessage = $classBaseMessage; // 컨스트럭터에서 변수를 지정하면 따로 render 메서드 쪽에서 변수를 넘겨주지 않아도 된다.
     $this->defaultMessage = $defaultMessage;
   }
