@@ -12,4 +12,7 @@
 
   <!-- git 테스트중 -->
 
+  <x-tests.card title="CSS변경할꼬얌" class="bg-red-300" /> 
+
+
 </x-tests.app>
