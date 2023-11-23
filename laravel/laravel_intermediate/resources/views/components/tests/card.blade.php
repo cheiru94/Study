@@ -1,6 +1,7 @@
 
 @props([
-  'title',
+  // 'title',
+  'title'=>'t초기값',
   'msg' => '초기값',
   'content' => '본문 초기값'
   ])
