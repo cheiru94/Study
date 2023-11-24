@@ -30,8 +30,11 @@ Route::get('/dashboard', function () {
 Route::get('/component-test1', [ComponentTestController::class, 'showComponent1']);
 Route::get('/component-test2', [ComponentTestController::class, 'showComponent2']);
 
-
+// 🟢 서비스 컨테이너 테스트
 Route::get('/servicecontainertest', [LifeCycleTestController::class, 'showServiceContainerTest']);
+
+//  🟢 서비스 프로바이더 테스트
+Route::get('/serviceprovidertest', [LifeCycleTestController::class, 'showServiceProviderTest']);
 
 
 Route::middleware('auth')->group(function () {

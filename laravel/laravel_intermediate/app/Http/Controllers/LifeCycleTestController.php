@@ -4,10 +4,27 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-// 🟢 1. LifeCycleTestController 클래스
+/* 🟢 1. LifeCycleTestController 클래스 */
+
 class LifeCycleTestController extends Controller
 {
-  //
+  /* 🟢 서비스 프로바이더 테스트 메서드 */
+  public function showServiceProviderTest()
+  {
+    // 1. app()->make( ) 로 서비스를 이용할 수 있고, 
+    //    서비스 이름이 encrypter , 이걸 변수 $encrypter에 넣는다. 
+    $encrypt = app()->make('encrypter');
+
+    // 2. 이 안에서 encrypt(  ) 메서드로 문자열을 넣으면 암호화 시켜준다.
+    $password = $encrypt->encrypt('password'); // encrypt : 암호화 하다
+
+    $sample = app()->make('serviceProviderTest');
+
+    // 3. $encrypt->decrypt( ) 메서드를 실행하면 복호화 시켜준다.
+    dd($sample, $password, $encrypt->decrypt($password));
+  }
+
+  /* 🟢 서비스 컨테이너 테스트 메서드 */
   public function showServiceContainerTest()
   {
     //           呼び出す時の名前、 機能（関数：클로저)
@@ -38,7 +55,7 @@ class LifeCycleTestController extends Controller
 
 
 
-// 🟢 2.Sample 클래스 => Message 클래스에 의존
+/* 🟢 2.Sample 클래스 => Message 클래스에 의존 */
 class Sample
 {
   public $message;
@@ -56,7 +73,7 @@ class Sample
   }
 }
 
-// 🟢 3.Message 클래스
+/* 🟢 3.Message 클래스 */
 class Message
 {
   public function send()
