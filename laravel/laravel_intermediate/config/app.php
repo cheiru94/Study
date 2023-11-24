@@ -155,6 +155,7 @@ return [
     |
     */
 
+  // 라라벨을 표시할 타이밍에 여기에 있는 서비스 프로바이더들이 실행된다.
   'providers' => ServiceProvider::defaultProviders()->merge([
     /*
          * Package Service Providers...
@@ -167,7 +168,7 @@ return [
     App\Providers\AuthServiceProvider::class,
     // App\Providers\BroadcastServiceProvider::class,
     App\Providers\EventServiceProvider::class,
-    App\Providers\RouteServiceProvider::class,
+    App\Providers\RouteServiceProvider::class, // 멀티로그인 이 프로바이더를 다룬다.
     App\Providers\SampleServiceProvider::class, // <=  SampleServiceProvider 추가
   ])->toArray(),
 
