@@ -17,15 +17,15 @@ class LifeCycleTestController extends Controller
 
     $test = app()->make('lifeCycleTest');
 
-    /* 서비스 컨테이너를 사용하지 않는 패턴패턴 */
+    /* 🟡 서비스 컨테이너를 사용하지 않는 패턴패턴 */
     // $message = new Message();
     // $sample = new Sample($message);
     // $sample->run();
 
 
-    /* 서비스 컨테이너를 사용하는 패턴 🍊*/
-    app()->bind('sample', Sample::class);
-    $sample = app()->make('sample');
+    /* 🟢 서비스 컨테이너를 사용하는 패턴 */
+    app()->bind('sample', Sample::class); // 1. bind로 서비스 컨테이너에 서비스 등록하기
+    $sample = app()->make('sample'); // 2. 등록한 것을 make로 호출
     $sample->run();
 
 
