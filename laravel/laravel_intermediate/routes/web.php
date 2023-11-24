@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileController; // 컨트롤러 경로를 통해 불러옴 
 use Illuminate\Support\Facades\Route; // Route를 읽어 들임 
 use App\Http\Controllers\ComponentTestController; // 컨트롤러 경로를 통해 불러옴 
+use App\Http\Controllers\LifeCycleTestController; // 컨트롤러 경로를 통해 불러옴 
 
 /*
 |--------------------------------------------------------------------------
@@ -29,6 +30,8 @@ Route::get('/dashboard', function () {
 Route::get('/component-test1', [ComponentTestController::class, 'showComponent1']);
 Route::get('/component-test2', [ComponentTestController::class, 'showComponent2']);
 
+
+Route::get('/servicecontainertest', [LifeCycleTestController::class, 'showServiceContainerTest']);
 
 
 Route::middleware('auth')->group(function () {
