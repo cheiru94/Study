@@ -16,8 +16,11 @@ return [
     // 표준 설정 
     'defaults' => [
         // 'guard' => 'web',
+
         'guard' => 'users', // users로 수정 -> default로  guards의 users를 사용하겠다. (46번 라인)
-        'passwords' => 'users',
+        // 위에서 guard를 users로 설정했다면 'users'라는 가드는 이후에 'guards' 배열에서 정의되어야 한다.
+
+        'passwords' => 'users', // 비밀번호 리셋 기능에서 사용할 "비밀번호 브로커"를 지정
     ],
 
     /*
@@ -41,9 +44,9 @@ return [
     'guards' => [
 
         /* 
-            'web' 가드: 'web' 가드는 'session' 드라이버와 'users' 제공자를 사용하여 인증을 처리합니다. 
-            'session' 드라이버는 세션 기반 인증을 사용하며,   | 세션은 사용자가 웹사이트를 방문하는 동안 유지되는 일종의 임시 저장소
-            'users' 제공자는 'users' 테이블에서 사용자 정보를 가져옵니다.
+        'web' 가드: 'web' 가드는 'session' 드라이버와 'users' 제공자를 사용하여 인증을 처리합니다. 
+        'session' 드라이버는 세션 기반 인증을 사용하며,   | 세션은 사용자가 웹사이트를 방문하는 동안 유지되는 일종의 임시 저장소
+        'users' 제공자는 'users' 테이블에서 사용자 정보를 가져옵니다.
         */
         'web' => [
             'driver' => 'session', // 세션 드라이버를 사용하면, 사용자가 웹사이트를 이용하는 동안 로그인 상태를 유지할 수 있습니다. 
