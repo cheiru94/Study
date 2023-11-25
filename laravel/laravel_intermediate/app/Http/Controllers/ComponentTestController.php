@@ -10,7 +10,9 @@ class ComponentTestController extends Controller
   public function showComponent1()
   {
     $msg = '메세지'; // 컴포넌트에 변수 전달
-    return view('tests.component-test1', compact('msg')); //test 폴더 안에 component-test1 파일을 반환
+    $message = 'メッセージ';
+
+    return view('tests.component-test1', compact('msg', 'message')); //test 폴더 안에 component-test1 파일을 반환
   }
 
   public function showComponent2()
