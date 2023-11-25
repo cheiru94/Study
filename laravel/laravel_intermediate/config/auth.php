@@ -4,17 +4,19 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Authentication Defaults
+    | 인증 기본값
     |--------------------------------------------------------------------------
     |
-    | This option controls the default authentication "guard" and password
-    | reset options for your application. You may change these defaults
-    | as required, but they're a perfect start for most applications.
+    | 이 옵션은 기본 인증 '가드' 및 비밀번호를 제어합니다.
+    | 애플리케이션의 재설정 옵션을 제어합니다. 필요에 따라 이러한 기본값을 변경할 수 있지만
+    | 대부분의 애플리케이션에서 이 기본값으로 시작하는 것이 좋습니다.
     |
     */
 
+    // 표준 설정 
     'defaults' => [
-        'guard' => 'web',
+        // 'guard' => 'web',
+        'guard' => 'users', // users로 수정 -> default로  guards의 users를 사용하겠다. (46번 라인)
         'passwords' => 'users',
     ],
 
@@ -23,22 +25,56 @@ return [
     | Authentication Guards
     |--------------------------------------------------------------------------
     |
-    | Next, you may define every authentication guard for your application.
-    | Of course, a great default configuration has been defined for you
-    | here which uses session storage and the Eloquent user provider.
+    | 다음으로 애플리케이션에 대한 모든 인증 가드를 정의할 수 있습니다.
+    | 물론 세션 저장소를 사용하는 훌륭한 기본 구성이 정의되어 있습니다.
+    | 세션 스토리지와 Eloquent 사용자 공급자를 사용하는 훌륭한 기본 구성이 정의되어 있습니다.
     |
-    | All authentication drivers have a user provider. This defines how the
-    | users are actually retrieved out of your database or other storage
-    | mechanisms used by this application to persist your user's data.
+    | 모든 인증 드라이버에는 사용자 공급자가 있습니다. 이것은 어떻게
+    | 데이터베이스 또는 기타 저장소에서 사용자를 실제로 검색하는 방법과
+    | 이 애플리케이션에서 사용자 데이터를 유지하기 위해 사용하는 메커니즘을 정의합니다.
     |
     | Supported: "session"
     |
     */
 
+
     'guards' => [
+
+        /* 
+            'web' 가드: 'web' 가드는 'session' 드라이버와 'users' 제공자를 사용하여 인증을 처리합니다. 
+            'session' 드라이버는 세션 기반 인증을 사용하며,   | 세션은 사용자가 웹사이트를 방문하는 동안 유지되는 일종의 임시 저장소
+            'users' 제공자는 'users' 테이블에서 사용자 정보를 가져옵니다.
+        */
         'web' => [
+            'driver' => 'session', // 세션 드라이버를 사용하면, 사용자가 웹사이트를 이용하는 동안 로그인 상태를 유지할 수 있습니다. 
+            'provider' => 'users', // 해당 모델에서 가져오겠다는 뜻
+        ],
+
+        /* 
+        'users' 가드: 'users' 가드도 'session' 드라이버와 'users' 제공자를 사용하여 인증을 처리합니다. 
+        이 또한 세션 기반 인증을 사용하며, 'users' 테이블에서 사용자 정보를 가져옵니다.
+        */
+        'users ' => [
             'driver' => 'session',
             'provider' => 'users',
+        ],
+
+        /* 
+        'owners' 가드: 'owners' 가드는 'session' 드라이버와 'owners' 제공자를 사용하여 인증을 처리합니다. 
+        'session' 드라이버는 세션 기반 인증을 사용하며, 'owners' 제공자는 'owners' 테이블에서 사용자 정보를 가져옵니다.
+        */
+        'owners' => [
+            'driver' => 'session',
+            'provider' => 'owners', // 해당 모델에서 가져오겠다는 뜻
+        ],
+
+        /* 
+        'admin' 가드: 'admin' 가드는 'session' 드라이버와 'admin' 제공자를 사용하여 인증을 처리합니다. 
+        'session' 드라이버는 세션 기반 인증을 사용하며, 'admin' 제공자는 'admin' 테이블에서 사용자 정보를 가져옵니다.
+        */
+        'admin' => [
+            'driver' => 'session',
+            'provider' => 'admin', // 해당 모델에서 가져오겠다는 뜻
         ],
     ],
 
@@ -47,13 +83,13 @@ return [
     | User Providers
     |--------------------------------------------------------------------------
     |
-    | All authentication drivers have a user provider. This defines how the
-    | users are actually retrieved out of your database or other storage
-    | mechanisms used by this application to persist your user's data.
+    | 모든 인증 드라이버에는 사용자 공급자가 있습니다. 이는 데이터베이스에서
+    | 데이터베이스 또는 기타 저장소에서 사용자를 실제로 검색하는 방법과
+    | 사용자 데이터를 유지하기 위해 이 애플리케이션에서 사용하는 메커니즘을 정의합니다.
     |
-    | If you have multiple user tables or models you may configure multiple
-    | sources which represent each model / table. These sources may then
-    | be assigned to any extra authentication guards you have defined.
+    | 여러 사용자 테이블 또는 모델이 있는 경우 각 모델/테이블을 나타내는 여러 개의
+    | 소스를 여러 개 구성할 수 있습니다. 그러면 이러한 소스는
+    | 정의한 추가 인증 가드에 할당될 수 있습니다..
     |
     | Supported: "database", "eloquent"
     |
@@ -64,6 +100,14 @@ return [
             'driver' => 'eloquent',
             'model' => App\Models\User::class,
         ],
+        'owners' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Owner::class,
+        ],
+        'admin' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Admin::class,
+        ],
 
         // 'users' => [
         //     'driver' => 'database',
@@ -73,20 +117,16 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Resetting Passwords
+    | 비밀번호 재설정하기
     |--------------------------------------------------------------------------
     |
-    | You may specify multiple password reset configurations if you have more
-    | than one user table or model in the application and you want to have
-    | separate password reset settings based on the specific user types.
+    | 둘 이상의 사용자 테이블과 모델이 있는 경우 여러 비밀번호 재설정 구성을 지정할 수 있습니다.
+    | 하나 이상의 사용자 테이블 또는 모델이 있고 특정 사용자 유형에 따라
+    | 특정 사용자 유형에 따라 별도의 비밀번호 재설정 설정을 지정할 수 있습니다.
     |
-    | The expiry time is the number of minutes that each reset token will be
-    | considered valid. This security feature keeps tokens short-lived so
-    | they have less time to be guessed. You may change this as needed.
-    |
-    | The throttle setting is the number of seconds a user must wait before
-    | generating more password reset tokens. This prevents the user from
-    | quickly generating a very large amount of password reset tokens.
+    | 만료 시간은 각 재설정 토큰이 유효한 것으로 간주되는 시간(분)입니다.
+    | 유효하다고 간주되는 시간입니다. 이 보안 기능은 토큰의 수명을 짧게 유지하여
+    | 토큰의 수명을 짧게 유지하여 추측할 수 있는 시간을 줄입니다. 필요에 따라 이 값을 변경할 수 있습니다.
     |
     */
 
@@ -94,19 +134,31 @@ return [
         'users' => [
             'provider' => 'users',
             'table' => 'password_reset_tokens',
-            'expire' => 60,
-            'throttle' => 60,
+            'expire' => 60,   // 만료 기간
+            'throttle' => 60, // 로그인 제한 횟수 , 지정해 놓은 초간 재로그인 불가
+        ],
+        'owners' => [
+            'provider' => 'owners',
+            'table' => 'owner_password_reset',
+            'expire' => 60,   // 만료 기간
+            'throttle' => 60, // 로그인 제한 횟수 , 지정해 놓은 초간 재로그인 불가
+        ],
+        'admin' => [
+            'provider' => 'admin',
+            'table' => 'admin_password_reset',
+            'expire' => 60,   // 만료 기간
+            'throttle' => 60, // 로그인 제한 횟수 , 지정해 놓은 초간 재로그인 불가
         ],
     ],
 
     /*
     |--------------------------------------------------------------------------
-    | Password Confirmation Timeout
+    | 비밀번호 확인 시간 초과
     |--------------------------------------------------------------------------
     |
-    | Here you may define the amount of seconds before a password confirmation
-    | times out and the user is prompted to re-enter their password via the
-    | confirmation screen. By default, the timeout lasts for three hours.
+    | 비밀번호 확인이 완료되고 사용자에게 비밀번호를 다시 입력하라는 메시지가 표시되기까지의 시간(초)을 정의할 수 있습니다.
+    | 시간이 초과되고 사용자에게 비밀번호를 다시 입력하라는 메시지가 표시되기까지의 시간을 정의할 수 있습니다.
+    | 확인 화면을 통해 비밀번호를 다시 입력하라는 메시지가 표시됩니다. 기본적으로 시간 제한은 3시간 동안 지속됩니다.
     |
     */
 
