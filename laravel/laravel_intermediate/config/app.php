@@ -169,7 +169,7 @@ return [
     // App\Providers\BroadcastServiceProvider::class,
     App\Providers\EventServiceProvider::class,
     App\Providers\RouteServiceProvider::class, // 멀티로그인 이 프로바이더를 다룬다.
-    App\Providers\SampleServiceProvider::class, // <=  🟢　새로 서비스 프로바이더 추가 =  SampleServiceProvider 🟢
+    App\Providers\SampleServiceProvider::class, // <=  🟢　서비스 프로바이더 추가 =  SampleServiceProvider (인강 37. サービスプロバイダ その2) 🟢
   ])->toArray(),
 
   /*
