@@ -13,12 +13,12 @@ class LifeCycleTestController extends Controller
   {
     // 1. app()->make( ) 로 서비스를 이용할 수 있고, 
     //    서비스 이름이 encrypter , 이걸 변수 $encrypter에 넣는다. 
-    $encrypt = app()->make('encrypter');
+    $encrypt = app()->make('encrypter'); // 
 
     // 2. 이 안에서 encrypt(  ) 메서드로 문자열을 넣으면 암호화 시켜준다.
     $password = $encrypt->encrypt('password'); // encrypt : 암호화 하다
 
-    $sample = app()->make('serviceProviderTest');
+    $sample = app()->make('serviceProviderTest'); //SampleServiceProvider에서 registser에 등록해 놓은 것
 
     // 3. $encrypt->decrypt( ) 메서드를 실행하면 복호화 시켜준다.
     dd($sample, $password, $encrypt->decrypt($password));
@@ -44,8 +44,6 @@ class LifeCycleTestController extends Controller
     app()->bind('sample', Sample::class); // 1. bind로 서비스 컨테이너에 서비스 등록하기
     $sample = app()->make('sample'); // 2. 등록한 것을 make로 호출
     $sample->run();
-
-
 
 
     dd($test, app());
