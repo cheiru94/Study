@@ -2,6 +2,9 @@
 
 use App\Http\Controllers\ProfileController; // 컨트롤러 경로를 통해 불러옴 
 
+
+/* owner용에 맞게 컨트롤러를 지정해주어야 한다. */
+
 use App\Http\Controllers\Owner\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Owner\Auth\ConfirmablePasswordController;
 use App\Http\Controllers\Owner\Auth\EmailVerificationNotificationController;
@@ -42,12 +45,9 @@ Route::middleware('auth')->group(function () {
   Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
+
 require __DIR__ . '/auth.php'; // 현재 디렉토리의 /auth.php 를 읽어와라 
 
-
-
-
-/*  */
 
 
 

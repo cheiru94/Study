@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProfileController; // 컨트롤러 경로를 통해 불러옴 
 
+
 use App\Http\Controllers\Admin\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Admin\Auth\ConfirmablePasswordController;
 use App\Http\Controllers\Admin\Auth\EmailVerificationNotificationController;
@@ -47,7 +48,6 @@ require __DIR__ . '/auth.php'; // 현재 디렉토리의 /auth.php 를 읽어와
 
 
 
-/*  */
 
 
 
