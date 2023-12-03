@@ -5,7 +5,7 @@ use Illuminate\Support\ServiceProvider;
 
 return [
 
-    /*
+  /*
     |--------------------------------------------------------------------------
     | Application Name
     |--------------------------------------------------------------------------
@@ -16,9 +16,9 @@ return [
     |
     */
 
-    'name' => env('APP_NAME', 'Laravel'),
+  'name' => env('APP_NAME', 'Laravel'),
 
-    /*
+  /*
     |--------------------------------------------------------------------------
     | Application Environment
     |--------------------------------------------------------------------------
@@ -29,9 +29,9 @@ return [
     |
     */
 
-    'env' => env('APP_ENV', 'production'),
+  'env' => env('APP_ENV', 'production'),
 
-    /*
+  /*
     |--------------------------------------------------------------------------
     | Application Debug Mode
     |--------------------------------------------------------------------------
@@ -42,9 +42,9 @@ return [
     |
     */
 
-    'debug' => (bool) env('APP_DEBUG', false),
+  'debug' => (bool) env('APP_DEBUG', false),
 
-    /*
+  /*
     |--------------------------------------------------------------------------
     | Application URL
     |--------------------------------------------------------------------------
@@ -55,11 +55,11 @@ return [
     |
     */
 
-    'url' => env('APP_URL', 'http://localhost'),
+  'url' => env('APP_URL', 'http://localhost'),
 
-    'asset_url' => env('ASSET_URL'),
+  'asset_url' => env('ASSET_URL'),
 
-    /*
+  /*
     |--------------------------------------------------------------------------
     | Application Timezone
     |--------------------------------------------------------------------------
@@ -70,9 +70,9 @@ return [
     |
     */
 
-    'timezone' => 'UTC',
+  'timezone' => 'Asia/Tokyo',
 
-    /*
+  /*
     |--------------------------------------------------------------------------
     | Application Locale Configuration
     |--------------------------------------------------------------------------
@@ -83,9 +83,9 @@ return [
     |
     */
 
-    'locale' => 'en',
+  'locale' => 'ja',
 
-    /*
+  /*
     |--------------------------------------------------------------------------
     | Application Fallback Locale
     |--------------------------------------------------------------------------
@@ -96,9 +96,9 @@ return [
     |
     */
 
-    'fallback_locale' => 'en',
+  'fallback_locale' => 'en',
 
-    /*
+  /*
     |--------------------------------------------------------------------------
     | Faker Locale
     |--------------------------------------------------------------------------
@@ -109,9 +109,9 @@ return [
     |
     */
 
-    'faker_locale' => 'en_US',
+  'faker_locale' => 'ja_JP',
 
-    /*
+  /*
     |--------------------------------------------------------------------------
     | Encryption Key
     |--------------------------------------------------------------------------
@@ -122,11 +122,11 @@ return [
     |
     */
 
-    'key' => env('APP_KEY'),
+  'key' => env('APP_KEY'),
 
-    'cipher' => 'AES-256-CBC',
+  'cipher' => 'AES-256-CBC',
 
-    /*
+  /*
     |--------------------------------------------------------------------------
     | Maintenance Mode Driver
     |--------------------------------------------------------------------------
@@ -139,15 +139,15 @@ return [
     |
     */
 
-    'maintenance' => [
-        'driver' => 'file',
-        // 'store' => 'redis',
-    ],
+  'maintenance' => [
+    'driver' => 'file',
+    // 'store' => 'redis',
+  ],
 
-    /*
+  /*
     |--------------------------------------------------------------------------
-    | Autoloaded Service Providers
-    |--------------------------------------------------------------------------
+    | Autoloaded Service Providers  자동 로드 서비스 제공자들
+    |-------------------------------------------------------------------https://github.com/cheiru94/Study/pull/8/conflicts-------
     |
     | The service providers listed here will be automatically loaded on the
     | request to your application. Feel free to add your own services to
@@ -155,22 +155,26 @@ return [
     |
     */
 
-    'providers' => ServiceProvider::defaultProviders()->merge([
-        /*
+  // 🟢🟢 라라벨을 표시할 타이밍에 여기에 있는 서비스 프로바이더들이 실행된다. 🟢🟢
+  'providers' => ServiceProvider::defaultProviders()->merge([
+    /*
          * Package Service Providers...
-         */
-
-        /*
-         * Application Service Providers...
-         */
-        App\Providers\AppServiceProvider::class,
-        App\Providers\AuthServiceProvider::class,
-        // App\Providers\BroadcastServiceProvider::class,
-        App\Providers\EventServiceProvider::class,
-        App\Providers\RouteServiceProvider::class,
-    ])->toArray(),
+    */
 
     /*
+         * Application Service Providers...
+    */
+    App\Providers\AppServiceProvider::class,
+    App\Providers\AuthServiceProvider::class,
+    // App\Providers\BroadcastServiceProvider::class,
+    App\Providers\EventServiceProvider::class,
+    App\Providers\RouteServiceProvider::class, // 멀티로그인 이 프로바이더를 다룬다.
+
+    App\Providers\SampleServiceProvider::class, // <=  🟢　서비스 프로바이더 추가 =  SampleServiceProvider (인강 37. サービスプロバイダ その2) 🟢
+
+  ])->toArray(),
+
+  /*
     |--------------------------------------------------------------------------
     | Class Aliases
     |--------------------------------------------------------------------------
@@ -181,8 +185,8 @@ return [
     |
     */
 
-    'aliases' => Facade::defaultAliases()->merge([
-        // 'Example' => App\Facades\Example::class,
-    ])->toArray(),
+  'aliases' => Facade::defaultAliases()->merge([
+    // 'Example' => App\Facades\Example::class,
+  ])->toArray(),
 
 ];

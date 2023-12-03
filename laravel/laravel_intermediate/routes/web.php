@@ -1,18 +1,46 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ProfileController; // 컨트롤러 경로를 통해 불러옴 
+use Illuminate\Support\Facades\Route; // Route를 읽어 들임 
+use App\Http\Controllers\ComponentTestController; // 컨트롤러 경로를 통해 불러옴 
+use App\Http\Controllers\LifeCycleTestController; // 컨트롤러 경로를 통해 불러옴 
 
 /*
 |--------------------------------------------------------------------------
 | Web Routes
 |--------------------------------------------------------------------------
 |
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "web" middleware group. Make something great!
+| 여기에서 애플리케이션의 웹 경로를 등록할 수 있습니다. 
+| 이러한 경로는 RouteServiceProvider에 의해 로드되며 모든 경로는
+| "웹" 미들웨어 그룹에 할당됩니다. 멋진 것을 만들어 보세요!
 |
 */
 
 Route::get('/', function () {
-    return view('welcome');
+  return view('welcome');
 });
+
+Route::get('/dashboard', function () {
+  return view('dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');
+
+
+// 🟢 ComponentTestController 추가  => 컴포넌트 연습 🟢
+//                경로                  컴포넌트 이름                   메서드 이름 
+Route::get('/component-test1', [ComponentTestController::class, 'showComponent1']);
+Route::get('/component-test2', [ComponentTestController::class, 'showComponent2']);
+
+// 🟢 서비스 컨테이너 테스트
+Route::get('/servicecontainertest', [LifeCycleTestController::class, 'showServiceContainerTest']);
+
+//  🟢 서비스 프로바이더 테스트
+Route::get('/serviceprovidertest', [LifeCycleTestController::class, 'showServiceProviderTest']);
+
+
+Route::middleware('auth')->group(function () {
+  Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+  Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+  Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+});
+
+require __DIR__ . '/auth.php'; // 현재 디렉토리의 /auth.php 를 읽어와라 
