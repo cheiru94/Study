@@ -4,8 +4,8 @@ import Student from "./UserReducer2_Student";
 
 // 🟢 1. useReducer reducer
 const reducer = (prev, action) => {
-  /* add_std */
   switch (action.type) {
+    /* 생성 */
     case "add-std":
       // eslint-disable-next-line no-case-declarations
       const name = action.payload.name;
@@ -22,7 +22,7 @@ const reducer = (prev, action) => {
         students: [...prev.students, newStudent],
       };
 
-    /* delete_std  */
+    /* 삭제  */
     case "delete-std":
       return {
         count: prev.count - 1,
@@ -33,6 +33,7 @@ const reducer = (prev, action) => {
         ),
       };
 
+    /* 출석 확인 */
     case "mark-std":
       return {
         count: prev.count,
