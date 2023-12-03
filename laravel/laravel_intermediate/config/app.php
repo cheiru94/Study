@@ -147,7 +147,7 @@ return [
   /*
     |--------------------------------------------------------------------------
     | Autoloaded Service Providers  자동 로드 서비스 제공자들
-    |--------------------------------------------------------------------------
+    |-------------------------------------------------------------------https://github.com/cheiru94/Study/pull/8/conflicts-------
     |
     | The service providers listed here will be automatically loaded on the
     | request to your application. Feel free to add your own services to
@@ -155,21 +155,23 @@ return [
     |
     */
 
-  // 라라벨을 표시할 타이밍에 여기에 있는 서비스 프로바이더들이 실행된다.
+  // 🟢🟢 라라벨을 표시할 타이밍에 여기에 있는 서비스 프로바이더들이 실행된다. 🟢🟢
   'providers' => ServiceProvider::defaultProviders()->merge([
     /*
          * Package Service Providers...
-         */
+    */
 
     /*
          * Application Service Providers...
-         */
+    */
     App\Providers\AppServiceProvider::class,
     App\Providers\AuthServiceProvider::class,
     // App\Providers\BroadcastServiceProvider::class,
     App\Providers\EventServiceProvider::class,
     App\Providers\RouteServiceProvider::class, // 멀티로그인 이 프로바이더를 다룬다.
+
     App\Providers\SampleServiceProvider::class, // <=  🟢　서비스 프로바이더 추가 =  SampleServiceProvider (인강 37. サービスプロバイダ その2) 🟢
+
   ])->toArray(),
 
   /*
