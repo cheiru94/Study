@@ -1,0 +1,30 @@
+[
+  // オブジェクトのkeyはダブルコーテーションを使用する
+  {
+    "id": 1,
+    "username": "hoge太郎",
+    "age": 20,
+    "hobbies": [
+      "soccer"
+    ],
+    "premiumAccount": true
+  },
+  {
+    "id": 2,
+    "username": "fuga太郎",
+    "age": 17,
+    "hobbies": [
+      "カメラ"
+    ],
+    "premiumAccount": false
+  },
+  {
+    "id": 3,
+    "username": "piyo太郎",
+    "age": 20,
+    "hobbies": [
+      "筋トレ"
+    ],
+    "premiumAccount": true
+  }
+]

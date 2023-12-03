@@ -1,0 +1,37 @@
+// POINT JSONとは
+// JavaScript Object Notation の略称
+// JavaScript のデータ定義文をベースとした、簡易的なデータ定義言語
+// 様々な言語間のデータ通信の際に用いられることが多い
+// これまでは XML が利用されてきましたが、現在では簡易的な JSON が利用されることが増えています
+// JSON ファイルは拡張子 .json で記述する
+// 通常の json ファイルの場合はコメントを書くことができないが、 .jsonc にするとコメントを書くことができる。
+[
+  // オブジェクトのkeyはダブルコーテーションを使用する
+  {
+    "id": 1,
+    "username": "hoge太郎",
+    "age": 20,
+    "hobbies": [
+      "soccer"
+    ],
+    "premiumAccount": true
+  },
+  {
+    "id": 2,
+    "username": "fuga太郎",
+    "age": 17,
+    "hobbies": [
+      "カメラ"
+    ],
+    "premiumAccount": false
+  },
+  {
+    "id": 3,
+    "username": "piyo太郎",
+    "age": 20,
+    "hobbies": [
+      "筋トレ"
+    ],
+    "premiumAccount": true
+  }
+]
