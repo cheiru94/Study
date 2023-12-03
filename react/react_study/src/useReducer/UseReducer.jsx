@@ -1,5 +1,7 @@
 import React, { useReducer, useState } from "react";
 
+/* きらぼし銀行 */
+
 const ACTION_TYPES = {
   diposit: "diposit",
   withdraw: "withdraw",
