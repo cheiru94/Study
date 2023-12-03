@@ -80,7 +80,11 @@ const UseReducer2 = () => {
       />
       <button
         style={{ marginLeft: "20px", backgroundColor: "orange" }}
-        onClick={() => {
+        onClick={(e) => {
+          if (e.target.value == "") {
+            alert("名前をお書き下さい。");
+            return;
+          }
           dispatch({ type: "add-std", payload: { name } }); // payload에 객체를 넣음 { name: name }를 줄여씀
         }}
       >
