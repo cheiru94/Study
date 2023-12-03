@@ -8,7 +8,7 @@ const UserReducer2_Student = ({ name, dispatch, id, isHere }) => {
       <span
         style={{
           textDecoration: isHere ? "line-through" : "none",
-          color: isHere ? "red" : "white",
+          color: isHere ? "orange" : "white",
         }}
         onClick={() => {
           dispatch({ type: "mark-std", payload: { id } });

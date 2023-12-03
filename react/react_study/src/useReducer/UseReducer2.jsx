@@ -70,6 +70,13 @@ const UseReducer2 = () => {
         placeholder="名前をお書き下さい。"
         value={name}
         onChange={(e) => setName(e.target.value)}
+        style={{
+          backgroundColor: "white",
+          width: "250px",
+          height: "50px",
+          fontSize: "25px",
+          color: "black",
+        }}
       />
       <button
         style={{ marginLeft: "20px", backgroundColor: "orange" }}
