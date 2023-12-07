@@ -1,5 +1,5 @@
 // eslint-disable-next-line no-unused-vars
-import React, { useReducer, useState } from "react";
+import React, { useReducer, useRef, useState } from "react";
 import Student from "./UserReducer2_Student";
 
 // 🟢 1. useReducer reducer
@@ -41,6 +41,7 @@ const reducer = (prev, action) => {
           if (student.id === action.payload.id) {
             return { ...student, isHere: !student.isHere };
           }
+          return student;
         }),
       };
     default:
@@ -62,11 +63,15 @@ const initState = {
 const UseReducer2 = () => {
   const [name, setName] = useState();
   const [stdInfo, dispatch] = useReducer(reducer, initState);
+  const inputRef = useRef();
+  console.log("inputRef: ", inputRef);
+
   return (
     <>
       <h1>出席簿</h1>
       <p>学生の数：{stdInfo.count}</p>
       <input
+        ref={inputRef}
         type="text"
         placeholder="名前をお書き下さい。"
         value={name}
@@ -81,12 +86,14 @@ const UseReducer2 = () => {
       />
       <button
         style={{ marginLeft: "20px", backgroundColor: "orange" }}
-        onClick={(e) => {
+        onClick={() => {
           if (name == "") {
             alert("名前をお書き下さい。");
             return;
           }
           dispatch({ type: "add-std", payload: { name } }); // payload에 객체를 넣음 { name: name }를 줄여씀
+          setName("");
+          inputRef.current.focus();
         }}
       >
         追加
