@@ -82,7 +82,7 @@ const UseReducer2 = () => {
       <button
         style={{ marginLeft: "20px", backgroundColor: "orange" }}
         onClick={(e) => {
-          if (e.target.value == "") {
+          if (name == "") {
             alert("名前をお書き下さい。");
             return;
           }
