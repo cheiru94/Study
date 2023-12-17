@@ -12,10 +12,18 @@
 
     <body class="grey-bg">
       <div class="white-bg">
-        <% for (let i = 0; i < result.length; i++ ){ %>
+        <% for (let i = 0; i < result.length; i++){ %>
         <div class="list-box">
-          <h4><%= result[i].title %></h4>
+          <h4>
+            <a
+              href="/detail/<%= result[i]._id %>"
+              style="text-decoration: none; color: black"
+              ><%= result[i].title %></a
+            >
+            <a href="/edit/<%= result[i]._id %>">🖍️</a>
+          </h4>
           <p><%= result[i].content %></p>
+          <!-- 수정 태그 -->
         </div>
         <% } %>
       </div>

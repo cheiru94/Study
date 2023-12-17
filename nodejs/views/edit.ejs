@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <%- include('nav.ejs') %>
+
+    <div class="detail-bg">
+      <form class="form-box" action="/edit" method="POST">
+        <h4>수정하기</h4>
+
+        <input name="id" value="<%= result._id %>" style="display: none" />
+        <input name="title" value="<%= result.title %>" />
+        <input name="content" value="<%= result.content %>" />
+        <button type="submit">수정</button>
+      </form>
+    </div>
+  </body>
+</html>
