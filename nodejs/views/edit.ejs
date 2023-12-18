@@ -9,14 +9,24 @@
     <%- include('nav.ejs') %>
 
     <div class="detail-bg">
-      <form class="form-box" action="/edit" method="POST">
+      <!-- <form class="form-box" action="/edit" method="POST"> -->
+      <form class="form-box" action="/edit?_method=PUT" method="POST">
         <h4>수정하기</h4>
-
         <input name="id" value="<%= result._id %>" style="display: none" />
         <input name="title" value="<%= result.title %>" />
         <input name="content" value="<%= result.content %>" />
         <button type="submit">수정</button>
       </form>
     </div>
+
+    <!--  내가 만든 버전
+    <div class="detail-bg">
+      <form class="form-box" action="/edit/<%= result._id %>" method="POST">
+        <h4>수정하기</h4>
+        <input name="title" value="<%= result.title %>" />
+        <input name="content" value="<%= result.content %>" />
+        <button type="submit">수정</button>
+      </form>
+    </div> -->
   </body>
 </html>

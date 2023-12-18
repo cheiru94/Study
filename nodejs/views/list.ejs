@@ -6,27 +6,34 @@
     <title>Document</title>
     <link rel="stylesheet" href="main.css" />
   </head>
-  <body>
+  <body class="grey-bg">
     <%- include('nav.ejs') %>
     <!-- 2번 째 인자로는 ejs에 값 넘겨줄 수 있다 -->
 
-    <body class="grey-bg">
-      <div class="white-bg">
-        <% for (let i = 0; i < result.length; i++){ %>
-        <div class="list-box">
-          <h4>
-            <a
-              href="/detail/<%= result[i]._id %>"
-              style="text-decoration: none; color: black"
-              ><%= result[i].title %></a
-            >
-            <a href="/edit/<%= result[i]._id %>">🖍️</a>
-          </h4>
-          <p><%= result[i].content %></p>
+    <div class="white-bg">
+      <% for (let i = 0; i < result.length; i++){ %>
+      <div class="list-box">
+        <h4>
+          <a
+            href="/detail/<%= result[i]._id %>"
+            style="text-decoration: none; color: black"
+            ><%= result[i].title %></a
+          >
           <!-- 수정 태그 -->
-        </div>
-        <% } %>
+          <a href="/edit/<%= result[i]._id %>">🖍️</a>
+          <span class="delete">🗑️</span>
+        </h4>
+        <p><%= result[i].content %></p>
       </div>
-    </body>
+      <% } %>
+    </div>
+
+    <script>
+      document.querySelectorAll(".delete")[0].addEventListener("click", () => {
+        fetch("/delete/<%= result[i]._id %>", {
+          method: "DELETE",
+        });
+      });
+    </script>
   </body>
 </html>
