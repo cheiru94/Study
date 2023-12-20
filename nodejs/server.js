@@ -76,7 +76,7 @@ app.post("/add", async (요청, 응답) => {
         title: 요청.body.title,
         content: 요청.body.content,
       });
-      응답.redirect("/list");
+      응답.redirect("/list"); // redirect의 경우 url경로
     } else {
       응답.send("글자를 입력하시라");
     }
@@ -149,6 +149,33 @@ app.put("/edit", async (req, res) => {
 //   }
 // });
 
-app.get("/delete/:id", async (req, res) => {
-  console.log(req.query);
+app.delete("/delete", async (req, res) => {
+  // console.log(req.query);
+  await db
+    .collection("post")
+    .deleteOne({ _id: new ObjectId(req.query.docid) }, {});
+  res.send("삭제완료");
+});
+
+app.get("/list/:id", async (req, res) => {
+  let upTo = Number(req.params.id);
+  console.log(req.params.id);
+  let result = await db
+    .collection("post")
+    .find()
+    .skip((upTo - 1) * 5)
+    .limit(5)
+    .toArray();
+  res.render("list.ejs", { result: result });
+});
+
+app.get("/list/next/:id", async (req, res) => {
+  let upTo = Number(req.params.id);
+  console.log(req.params.id);
+  let result = await db
+    .collection("post")
+    .find({ _id: { $gt: new ObjectId(req.params.id) } })
+    .limit(5)
+    .toArray();
+  res.render("list.ejs", { result: result });
 });

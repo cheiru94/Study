@@ -21,19 +21,32 @@
           >
           <!-- 수정 태그 -->
           <a href="/edit/<%= result[i]._id %>">🖍️</a>
-          <span class="delete">🗑️</span>
+          <span class="delete" data-id="<%= result[i]._id %>">🗑️</span>
         </h4>
         <p><%= result[i].content %></p>
       </div>
       <% } %>
     </div>
 
+    <a href="/list/next/<%= result[result.length - 1]._id %>">next</a>
+
     <script>
-      document.querySelectorAll(".delete")[0].addEventListener("click", () => {
-        fetch("/delete/<%= result[i]._id %>", {
-          method: "DELETE",
-        });
-      });
+      for (let i = 0; i < "<%= result.length%>"; i++) {
+        document
+          .querySelectorAll(".delete")
+          [i].addEventListener("click", (e) => {
+            fetch("/delete?docid=" + e.target.dataset.id, { method: "DELETE" })
+              .then((r) => r.text())
+              .then((r) => {
+                e.target.parentElement.parentElement.style.display = "none";
+              });
+          });
+      }
+
+      // document.querySelectorAll(".delete")[0].addEventListener("click", (e) => {
+      //   e.target.dataset.id;
+      //   fetch("/delete?docid=<%= result[0]._id %>", { method: "DELETE" });
+      // });
     </script>
   </body>
 </html>
