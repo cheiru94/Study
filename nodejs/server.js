@@ -1,24 +1,25 @@
 /* 🟡🟢 express 라이브러리 사용하겠다  */
 const express = require("express");
 const app = express();
+require("dotenv").config();
 
 /* 🟡🟢 몽고디비랑 연결 */
 const { MongoClient, ObjectId } = require("mongodb");
 
 let db;
-const url = // 연결할 몽고디비 주소 url
-  "mongodb+srv://admin:admin@cluster0.ha7x0tk.mongodb.net/?retryWrites=true&w=majority";
+
+const url = process.env.DB_URL; // 연결할 몽고디비 주소 url
 
 new MongoClient(url) // 이 url로
   .connect() // 몽고디비에 접속
   .then((client) => {
     console.log("DB연결 성공");
-    db = client.db("forum"); // ⭐️ 접속할DB 이름 ⭐️
+    db = client.db(process.env.DB_NAME); // ⭐️ 접속할DB 이름 ⭐️
 
     /* 🟡🟢 서버 띄우기 : app.listen( 포트번호 , */
-    app.listen(8085, () => {
+    app.listen(process.env.PORT, () => {
       // 내 컴퓨터에 port하나 오픈하는 문법
-      console.log("http://localhost:8085 에서 서버 실행중");
+      console.log(`http://localhost:${process.env.PORT} 에서 서버 실행중`);
     });
   })
   .catch((err) => {
@@ -52,7 +53,7 @@ app.use(
     cookie: { maxAge: 60 * 60 * 1000 },
     store: MongoStore.create({
       mongoUrl: url,
-      dbName: "forum",
+      dbName: process.env.DB_NAME,
     }),
   })
 );
