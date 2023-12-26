@@ -11,6 +11,9 @@
     <div class="detail-bg">
       <h4><%= result.title %></h4>
       <p><%= result.content %></p>
+      <% if(result.img) { %> <% for(let i =0; i < result.img.length; i++ ){ %>
+      <img src="<%= result.img[i] %>" alt="사진없음" height="200px" />
+      <% } %> <% } %>
     </div>
   </body>
 </html>

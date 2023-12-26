@@ -62,6 +62,28 @@ app.use(passport.session());
 /* 🟡🟢 비밀번호 해쉬 처리 */
 const bcrypt = require("bcrypt");
 
+/* 🟡🟢 S3 */
+const { S3Client } = require("@aws-sdk/client-s3");
+const multer = require("multer");
+const multerS3 = require("multer-s3");
+const s3 = new S3Client({
+  region: "ap-northeast-2", // 서울로 설정
+  credentials: {
+    accessKeyId: process.env.S3_KEY,
+    secretAccessKey: process.env.S3_SECRET,
+  },
+});
+
+const upload = multer({
+  storage: multerS3({
+    s3: s3,
+    bucket: "jaeilforum1",
+    key: function (요청, file, cb) {
+      cb(null, Date.now().toString()); //업로드시 파일명 변경가능
+    },
+  }),
+});
+
 /* ---------------------------------------------------------------------------------------------------------- */
 
 /* 🟡 간단한 서버의 기능 */
@@ -76,8 +98,14 @@ app.get("/", (요청, 응답) => {
 //   응답.send("뉴스임");
 // });
 
+function checkTime(req, res, next) {
+  let time = new Date();
+  console.log(time);
+  next();
+}
+
 /* 🟡 /list */
-app.get("/list", async (요청, 응답) => {
+app.get("/list", checkTime, async (요청, 응답) => {
   let result = await db.collection("post").find().toArray();
   // 응답.send(result[0].title); // 응답은 1번밖에 못 한다.
 
@@ -94,15 +122,18 @@ app.get("/write", (요청, 응답) => {
   응답.render("write.ejs");
 });
 
-/* 🟡 /add 게시글 추가 */
-app.post("/add", async (요청, 응답) => {
-  console.log(요청.body);
-
+/* 🟡 /add 게시글 추가  🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥 */
+app.post("/add", upload.array("img1", 3), async (요청, 응답) => {
   try {
     if (요청.body.title != "" && 요청.body.content != "") {
+      let imgs = 요청.files.map((img) => img.location);
+
+      // console.log("imgs: ", imgs);
       await db.collection("post").insertOne({
         title: 요청.body.title,
         content: 요청.body.content,
+        img: imgs,
+        // img: 요청.file.location,
       });
       응답.redirect("/list"); // redirect의 경우 url경로
     } else {
@@ -128,6 +159,7 @@ app.get("/detail/:id", async (req, res) => {
     }
     // 찾은 값 전달하기
     res.render("detail.ejs", { result });
+    console.log({ result });
   } catch (e) {
     console.log("error: ", e);
     res.status(404).send("404");
