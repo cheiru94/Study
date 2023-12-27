@@ -6,12 +6,10 @@ require("dotenv").config();
 /* 🟡🟢 몽고디비랑 연결 */
 const { MongoClient, ObjectId } = require("mongodb");
 
+let connectDB = require("./database.js");
 let db;
-
-const url = process.env.DB_URL; // 연결할 몽고디비 주소 url
-
-new MongoClient(url) // 이 url로
-  .connect() // 몽고디비에 접속
+const url = process.env.DB_URL;
+connectDB
   .then((client) => {
     console.log("DB연결 성공");
     db = client.db(process.env.DB_NAME); // ⭐️ 접속할DB 이름 ⭐️
@@ -36,7 +34,7 @@ app.set("view engine", "ejs"); /* ejs 셋팅 */
 
 /* 🟡🟢 유저가 보낸 데이터들을 꺼내쓰기 */
 app.use(express.json());
-app.use(express.urlencoded({ extended: true })); //이 미들웨어 함수는 HTTP POST 요청의 본문(body)에 인코딩된 데이터를 해석하고, req.body 객체에 채워넣어주는 역할을 합니다.
+app.use(express.urlencoded({ extended: true })); //이 미들웨어 함수는 HTTP POST 요청의 본문(body)에 인코딩된 데이터를 해석하고, req.body 객체에 채워넣어주는 역할을 합.find(니다.
 
 /* 🟡🟢 express-session , passport , passport-local */
 const passport = require("passport");
@@ -95,19 +93,18 @@ app.get("/", (요청, 응답) => {
 /* 테스트 */
 // app.get("/news", (요청, 응답) => {
 //   db.collection("post").insertOne({ title: "안녕하세요 " });
-//   응답.send("뉴스임");
+//   응답.send("뉴.find(스임");
 // });
 
 function checkTime(req, res, next) {
   let time = new Date();
-  console.log(time);
   next();
 }
 
 /* 🟡 /list */
 app.get("/list", checkTime, async (요청, 응답) => {
   let result = await db.collection("post").find().toArray();
-  // 응답.send(result[0].title); // 응답은 1번밖에 못 한다.
+  // 응답.send(result[0].title); /.find(/ 응답은 1번밖에 못 한다.
 
   /* 
     일반적으로 render 메서드는 템플릿 엔진을 사용하여 HTML 페이지를 생성하고, 
@@ -226,14 +223,17 @@ app.get("/list/next/:id", async (req, res) => {
   res.render("list.ejs", { result: result });
 });
 
-/* 🟡 제출한 아이디 / 비번 검사하는 코드 */
+/* 🟡 제출한 아이디 / 비번 검사하는 코드 ⭐️⭐️⭐️⭐️⭐️⭐️⭐️ */
 passport.use(
   // 유저가 로그인시 입력한 아이디 , 비번이 DB의 내용과 일치하는지 비교
   new LocalStrategy(async (입력한아이디, 입력한비번, cb) => {
+    // cd = done
+    // 1. DB에서 입력한 아이디로, 계정이 있는지 확인
     let result = await db
       .collection("user")
       .findOne({ username: 입력한아이디 });
 
+    // 2. DB에 계정이 없으면 에러
     if (!result) {
       return cb(null, false, { message: "아이디 DB에 없음" });
     }
@@ -281,7 +281,7 @@ app.post("/login", (req, res, next) => {
     if (error) return res.status(500).json(error);
     if (!user) return res.status(401).json(info.message);
 
-    // 🌙🌙🌙🌙🌙🌙🌙🌙🌙 다 일치하면 로그인 시켜주기 : 실행되면 세션 만들어준다. 🌙🌙🌙🌙🌙🌙🌙🌙
+    // 다 일치하면 로그인 시켜주기 : 실행되면 세션 만들어준다. => 로그인 시켜줌
     req.logIn(user, (err) => {
       if (err) return next(err);
       res.redirect("/");
@@ -311,4 +311,16 @@ app.post("/register", async (req, res) => {
   });
 
   res.redirect("/");
+});
+
+app.use("/shop", require("./routes/shop.js"));
+
+app.use("/board/sub", require("./routes/sub.js"));
+
+app.get("/search", async (req, res) => {
+  let result = await db
+    .collection("post")
+    .find({ title: { $regex: req.query.val } })
+    .toArray();
+  res.render("search.ejs", { result });
 });
