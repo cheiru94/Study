@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="main.css" />
+  </head>
+  <body class="grey-bg">
+    <%- include('nav.ejs') %>
+    <!-- 2번 째 인자로는 ejs에 값 넘겨줄 수 있다 -->
+
+    <input class="search" />
+    <button class="search-send">검색</button>
+
+    <h2>검색된 내용</h2>
+
+    <div class="white-bg">
+      <% for (let i = 0; i < result.length; i++){ %>
+      <div class="list-box">
+        <h4>
+          <a
+            href="/detail/<%= result[i]._id %>"
+            style="text-decoration: none; color: black"
+            ><%= result[i].title %></a
+          >
+
+          <a href="/edit/<%= result[i]._id %>">🖍️</a>
+          <span class="delete" data-id="<%= result[i]._id %>">🗑️</span>
+        </h4>
+        <p><%= result[i].content %></p>
+      </div>
+      <% } %>
+    </div>
+
+    <a href="/list/next/<%= result[result.length - 1]._id %>">next</a>
+  </body>
+</html>

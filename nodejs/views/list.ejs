@@ -10,6 +10,16 @@
     <%- include('nav.ejs') %>
     <!-- 2번 째 인자로는 ejs에 값 넘겨줄 수 있다 -->
 
+    <input class="search" />
+    <button class="search-send">검색</button>
+
+    <script>
+      document.querySelector(".search-send").addEventListener("click", (e) => {
+        let inputtedVal = document.querySelector(".search").value;
+        location.href = `/search?val=${inputtedVal}`; // val라는 변수에 inputtedVal를 저장해서 보낸다.
+      });
+    </script>
+
     <div class="white-bg">
       <% for (let i = 0; i < result.length; i++){ %>
       <div class="list-box">

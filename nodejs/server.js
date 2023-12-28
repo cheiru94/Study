@@ -318,9 +318,15 @@ app.use("/shop", require("./routes/shop.js"));
 app.use("/board/sub", require("./routes/sub.js"));
 
 app.get("/search", async (req, res) => {
-  let result = await db
-    .collection("post")
-    .find({ title: { $regex: req.query.val } })
-    .toArray();
+  let sc = [
+    {
+      $search: {
+        index: "title_index",
+        text: { query: req.query.val, path: "title" },
+      },
+    },
+    { $sort: { _id: 1 } },
+  ];
+  let result = await db.collection("post").aggregate(sc).toArray();
   res.render("search.ejs", { result });
 });
