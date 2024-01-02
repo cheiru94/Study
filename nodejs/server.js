@@ -86,6 +86,7 @@ const upload = multer({
 
 /* 🟡 간단한 서버의 기능 */
 app.get("/", (요청, 응답) => {
+  // console.log(요청.user);
   // __dirname : Node.js 환경에서 사용되는 특별한 변수로, 현재 실행 중인 스크립트 파일의 디렉토리 경로를 나타냅니다 , 현재 스크립트 파일이 위치한 디렉토리의 경로를 얻을 수 있어요
   응답.sendFile(__dirname + "/index.html"); // 일반 index 파일 보낼 때
 });
@@ -121,6 +122,7 @@ app.get("/write", (요청, 응답) => {
 
 /* 🟡 /add 게시글 추가  🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥 */
 app.post("/add", upload.array("img1", 3), async (요청, 응답) => {
+  // console.log(요청.user);
   try {
     if (요청.body.title != "" && 요청.body.content != "") {
       let imgs = 요청.files.map((img) => img.location);
@@ -129,7 +131,9 @@ app.post("/add", upload.array("img1", 3), async (요청, 응답) => {
       await db.collection("post").insertOne({
         title: 요청.body.title,
         content: 요청.body.content,
-        img: imgs,
+        img: imgs ? imgs : "",
+        user: 요청.user._id,
+        username: 요청.user.username,
         // img: 요청.file.location,
       });
       응답.redirect("/list"); // redirect의 경우 url경로
@@ -149,14 +153,14 @@ app.get("/detail/:id", async (req, res) => {
     let result = await db
       .collection("post")
       .findOne({ _id: new ObjectId(req.params.id) });
-    console.log(result);
+    // console.log(result);
 
     if (result === null) {
       res.status(404).send("이상함");
     }
     // 찾은 값 전달하기
     res.render("detail.ejs", { result });
-    console.log({ result });
+    // console.log({ result });
   } catch (e) {
     console.log("error: ", e);
     res.status(404).send("404");
@@ -169,32 +173,38 @@ app.get("/edit/:id", async (req, res) => {
   let result = await db
     .collection("post")
     .findOne({ _id: new ObjectId(req.params.id) });
-  console.log(result);
-  res.render("edit.ejs", { result });
+
+  console.log("result.user: ", result.user.toString());
+  console.log("req.user: ", req.user._id.toString());
+  console.log(result.user.toString() == req.user._id.toString());
+  // if (req.user === result.user) {
+  //   res.render("edit.ejs", { result });
+  // } else {
+  //   res.send("니가 작성한 글이 아니올시다 이양반아");
+  // }
 });
 
 /* 🟡 edit 수정 요청 */
 // app.post("/edit", async (req, res) => {
 app.put("/edit", async (req, res) => {
-  // await db.collection("post").updateMany(
-  //   { like: 20 },
-  //   { $set: { name: "아무개" } } //
-  // );
-
   await db
     .collection("post")
     .updateOne(
       { _id: new ObjectId(req.body.id) },
       { $set: { title: req.body.title, content: req.body.content } }
     );
-  console.log(req.body);
+  // console.log(req.body);
+
   res.redirect("/list");
 });
 
 /* 🟡 삭제 요청  */
 app.delete("/delete", async (req, res) => {
   // console.log(req.query);
-  await db.collection("post").deleteOne({ _id: new ObjectId(req.query.docid) });
+  await db.collection("post").deleteOne({
+    _id: new ObjectId(req.query.docid),
+    user: new ObjectId(req.user_id),
+  });
   res.send("삭제완료");
 });
 
@@ -329,4 +339,19 @@ app.get("/search", async (req, res) => {
   ];
   let result = await db.collection("post").aggregate(sc).toArray();
   res.render("search.ejs", { result });
+});
+
+app.post("/createComment", async (req, res) => {
+  console.log(req.user);
+  await db.collection("comment").insertOne({
+    comment: req.body.comment__input,
+    post_id: req.query.postId,
+    user_id: req.user._id,
+    user: req.user.username,
+  });
+});
+
+app.get("/createComment", async (req, res) => {
+  let comments = await db.collection("comment").find().toArray();
+  // console.log(comments);
 });

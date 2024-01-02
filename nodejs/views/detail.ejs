@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
+    <link rel="stylesheet" href="/main.css" />
   </head>
   <body>
     <%- include('nav.ejs') %>
@@ -15,5 +16,24 @@
       <img src="<%= result.img[i] %>" alt="사진없음" height="200px" />
       <% } %> <% } %>
     </div>
+
+    <hr />
+    <div class="comment">
+      <h3 class="comment__title">댓글</h3>
+
+      <input class="comment__input" name="comment__input" />
+      <button type="submit" class="comment__btn">추가</button>
+    </div>
+
+    <script>
+      const btn = document.querySelector(".comment__btn");
+      const input = document.querySelector(".comment__input");
+      btn.addEventListener("click", () => {
+        fetch("/createComment?postId=" + "<%= result._id %>", {
+          method: "POST",
+          // body: JSON.stringify({ comment: input.value }),
+        });
+      });
+    </script>
   </body>
 </html>
