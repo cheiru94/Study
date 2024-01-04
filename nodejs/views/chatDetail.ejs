@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="/main.css" />
+  </head>
+  <body>
+    <%- include('nav.ejs') %>
+
+    <div class="detail-bg">
+      <div class="chat-screen">
+        <div class="chat-box"><span>안녕하세요</span></div>
+        <div class="chat-box"><span>안녕하세요</span></div>
+        <div class="chat-box mine"><span>안녕하세요</span></div>
+      </div>
+    </div>
+    <div class="chat-form">
+      <input class="chat-input" />
+      <button class="chat-button">전송</button>
+    </div>
+
+    <!-- soket.IO 사용 -->
+    <script src="https://cdn.jsdelivr.net/npm/socket.io@4.7.2/client-dist/socket.io.min.js"></script>
+    <script>
+      // 유저의 웹 소캣 연결
+      const socket = io();
+
+      // 1. 유저 -> 서버  [ 데이터 보내기 ] : emit
+      socket.emit("aks-join", "1"); // 데이터 이름, 전달할 데이터
+
+      // 유저 -> 서버  [ 데이터 보내기 ] : emit
+      document.querySelector(".chat-button").addEventListener("click", () => {
+        socket.emit("message", { msg: "방가방가", room: "1" }); // 데이터 이름, 전달할 데이터
+      });
+
+      // 2. 서버 -> 모든 유저 [ 데이터 받기 ]
+      socket.on("name", (data) => {
+        // 서버가 전송한 데이터 이름, 전달할 데이터
+        console.log(data);
+      });
+
+      socket.on("broadcast", (data) => {
+        // 서버가 전송한 데이터 이름, 전달할 데이터
+        console.log(data);
+      });
+    </script>
+  </body>
+</html>

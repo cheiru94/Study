@@ -6,16 +6,16 @@ require("dotenv").config();
 /* 🟡🟢 몽고디비랑 연결 */
 const { MongoClient, ObjectId } = require("mongodb");
 
-let connectDB = require("./database.js");
+let connectDB = require("./database.js"); // db 파일에서 불러와서 사용함
 let db;
 const url = process.env.DB_URL;
-connectDB
+connectDB // 불러온 것 적용시키기 : 여기까지만 하면 계속해서 DB에서 불러와 사용할 필요가 없다
   .then((client) => {
     console.log("DB연결 성공");
     db = client.db(process.env.DB_NAME); // ⭐️ 접속할DB 이름 ⭐️
 
     /* 🟡🟢 서버 띄우기 : app.listen( 포트번호 , */
-    app.listen(process.env.PORT, () => {
+    server.listen(process.env.PORT, () => {
       // 내 컴퓨터에 port하나 오픈하는 문법
       console.log(`http://localhost:${process.env.PORT} 에서 서버 실행중`);
     });
@@ -82,12 +82,19 @@ const upload = multer({
   }),
 });
 
+/* 🟡🟢 SOKET.IO */
+const { createServer } = require("http");
+const { Server } = require("socket.io");
+const server = createServer(app);
+const io = new Server(server);
+
 /* ---------------------------------------------------------------------------------------------------------- */
 
 /* 🟡 간단한 서버의 기능 */
 app.get("/", (요청, 응답) => {
   // console.log(요청.user);
   // __dirname : Node.js 환경에서 사용되는 특별한 변수로, 현재 실행 중인 스크립트 파일의 디렉토리 경로를 나타냅니다 , 현재 스크립트 파일이 위치한 디렉토리의 경로를 얻을 수 있어요
+  console.log(요청.user);
   응답.sendFile(__dirname + "/index.html"); // 일반 index 파일 보낼 때
 });
 
@@ -148,23 +155,37 @@ app.post("/add", upload.array("img1", 3), async (요청, 응답) => {
 
 /* 🟡 /detail?:id 상세보기  */
 app.get("/detail/:id", async (req, res) => {
+  console.log(req.params);
   //id라는 변수에 입력받은  파라미터가 담겨 있다.
   try {
     let result = await db
       .collection("post")
       .findOne({ _id: new ObjectId(req.params.id) });
-    // console.log(result);
+
+    //  댓글 가져오기
+    let comments = await db
+      .collection("comment")
+      .find({ post_id: req.params.id })
+      .toArray();
+
+    // 유저 아이디
+    let username = req.user.username;
 
     if (result === null) {
       res.status(404).send("이상함");
     }
     // 찾은 값 전달하기
-    res.render("detail.ejs", { result });
-    // console.log({ result });
+    res.render("detail.ejs", { result, comments, username });
   } catch (e) {
     console.log("error: ", e);
     res.status(404).send("404");
   }
+});
+
+app.post("/detailDelete/:id/:cId", (req, res) => {
+  console.log(req.params.id);
+  db.collection("comment").deleteOne({ _id: new ObjectId(req.params.id) });
+  res.redirect("/detail/" + req.params.cId);
 });
 
 /* 🟡 /edit/:id 수정하기 페이지 */
@@ -174,14 +195,14 @@ app.get("/edit/:id", async (req, res) => {
     .collection("post")
     .findOne({ _id: new ObjectId(req.params.id) });
 
-  console.log("result.user: ", result.user.toString());
-  console.log("req.user: ", req.user._id.toString());
-  console.log(result.user.toString() == req.user._id.toString());
-  // if (req.user === result.user) {
-  //   res.render("edit.ejs", { result });
-  // } else {
-  //   res.send("니가 작성한 글이 아니올시다 이양반아");
-  // }
+  // console.log("result.user: ", result.user.toString());  => 이렇게 ObejctId 로 저장된 내용은 toString으로 변경해서 사용해야 하더라
+  // console.log("req.user: ", req.user._id.toString());
+  // console.log(result.user.toString() == req.user._id.toString());
+  if (result.user.toString() == req.user._id.toString()) {
+    res.render("edit.ejs", { result });
+  } else {
+    res.send("니가 작성한 글이 아니올시다 이양반아");
+  }
 });
 
 /* 🟡 edit 수정 요청 */
@@ -323,9 +344,9 @@ app.post("/register", async (req, res) => {
   res.redirect("/");
 });
 
-app.use("/shop", require("./routes/shop.js"));
+app.use("/shop", require("./routes/shop.js")); // require("./routes/shop.js")
 
-app.use("/board/sub", require("./routes/sub.js"));
+app.use("/board/sub", require("./routes/sub.js")); // require("./routes/sub.js")
 
 app.get("/search", async (req, res) => {
   let sc = [
@@ -342,16 +363,86 @@ app.get("/search", async (req, res) => {
 });
 
 app.post("/createComment", async (req, res) => {
-  console.log(req.user);
+  console.log(req.query.comment);
   await db.collection("comment").insertOne({
-    comment: req.body.comment__input,
+    comment: req.query.comment,
     post_id: req.query.postId,
     user_id: req.user._id,
     user: req.user.username,
   });
+  res.redirect("back");
 });
 
-app.get("/createComment", async (req, res) => {
-  let comments = await db.collection("comment").find().toArray();
-  // console.log(comments);
+/* chating */
+
+// app.get("/chating", async (req, res) => {
+//   let user = req.user._id.toString();
+//   let chatList = await db
+//     .collection("chat")
+//     .find({ _id: new ObjectId(user) })
+//     .toArray();
+
+//   res.render("chatList.ejs", { chatList });
+// });
+
+// app.get("/chat/:id", async (req, res) => {
+//   // 해당 게시글 id 값 찾아와서 , 그 게시글에 작성된 대화 창 만들기
+//   console.log(req.params.id);
+//   await db.collection("chating").find().array();
+
+//   res.render("chat.ejs");
+// });
+
+// ✏️ 채팅방 만들기
+app.get("/chat/request", async (req, res) => {
+  // console.log(req.user._id, req.query.writerId);
+  await db.collection("chatroom").insertOne({
+    member: [req.user._id, new ObjectId(req.query.writerId)],
+    data: new Date(),
+  });
+  res.redirect("/chat/list");
+});
+
+// ✏️ 자신이 속한 채팅방 목록 보기
+app.get("/chat/list", async (req, res) => {
+  console.log(req.user.username + " : " + req.user._id);
+  let result = await db
+    .collection("chatroom")
+    // member 자체가 array이기 때문에 원하는 내용만 넣으면 그에 관한 내용을 찾아 준다.
+    .find({ member: req.user._id })
+    .toArray();
+  console.log(result);
+  res.render("chatList.ejs", { result: result });
+});
+
+// ✏️ 해당되는 대화방 입장
+app.get("/chat/detail/:id", async (req, res) => {
+  let result = await db
+    .collection("chatroom")
+    .findOne({ _id: new ObjectId(req.params.id) });
+  res.render("chatDetail.ejs", { result });
+});
+
+/* 유저가 웹 소캣 연결시 서버에서 코드 실행시키기  */
+io.on("connection", (socket) => {
+  console.log("웹 소캣 연결함"); // 연결 잘 되었는지 확인用
+
+  // 1. 유저 -> 서버  [ 데이터 받기 ]
+  // .on  : 이벤트 리스너
+  socket.on("age", (data) => {
+    // 유저가 보낸 데이터, 실행 시킬 함수
+    console.log("data: ", data);
+
+    // 2. 서버 -> 웹 소켓 연결한 모든 유저 [ 데이터 보내기 ]
+    io.emit("name", "LeeJaeil"); // 데이터 이름, 전달할 데이터
+  });
+
+  socket.on("aks-join", (data) => {
+    socket.join(data);
+  });
+
+  socket.on("message", (data) => {
+    console.log("data: ", data);
+    io.to(data.room).emit("broadcast", data.msg);
+  });
 });

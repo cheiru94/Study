@@ -31,10 +31,14 @@
           >
           <!-- <img src="<%= result[i].img %>" height="50px" alt="x" /> -->
           <!-- 수정 태그 -->
+
           <a href="/edit/<%= result[i]._id %>">🖍️</a>
           <span class="delete" data-id="<%= result[i]._id %>">🗑️</span>
         </h4>
         <p><%= result[i].content %></p>
+        <!-- <form action="/chat/<%= result[i]._id %>" method="get">
+          <a href="/chat/<%= result[i]._id %>">💬</a>
+        </form> -->
       </div>
       <% } %>
     </div>
@@ -53,11 +57,6 @@
               });
           });
       }
-
-      // document.querySelectorAll(".delete")[0].addEventListener("click", (e) => {
-      //   e.target.dataset.id;
-      //   fetch("/delete?docid=<%= result[0]._id %>", { method: "DELETE" });
-      // });
     </script>
   </body>
 </html>
