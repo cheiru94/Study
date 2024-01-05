@@ -107,6 +107,8 @@ div {
   padding: 30px;
   border-radius: 10px;
   background-color: #c8bcbc;
+  height: 600px; /* 높이의 최대값을 설정해도 좋아요 */
+  overflow-y: auto;
 }
 .chat-box {
   margin-top: 15px;

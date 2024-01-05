@@ -9,9 +9,13 @@
   <body>
     <%- include('nav.ejs') %>
 
+    <!--  -->
+
+    <p>채팅방 : <%= JSON.stringify(result._id) %></p>
+    <p><%= JSON.stringify(result.member[0]) %></p>
     <div class="detail-bg">
       <div class="chat-screen">
-        <div class="chat-box"><span>안녕하세요</span></div>
+        <div class="chat-box"><span>채팅방 Id : <%=result._id%></span></div>
         <div class="chat-box"><span>안녕하세요</span></div>
         <div class="chat-box mine"><span>안녕하세요</span></div>
       </div>
@@ -27,23 +31,33 @@
       // 유저의 웹 소캣 연결
       const socket = io();
 
-      // 1. 유저 -> 서버  [ 데이터 보내기 ] : emit
-      socket.emit("aks-join", "1"); // 데이터 이름, 전달할 데이터
+      // 방 개설 요청
+      socket.emit("ask-join", "<%= result._id %>");
 
-      // 유저 -> 서버  [ 데이터 보내기 ] : emit
-      document.querySelector(".chat-button").addEventListener("click", () => {
-        socket.emit("message", { msg: "방가방가", room: "1" }); // 데이터 이름, 전달할 데이터
-      });
-
-      // 2. 서버 -> 모든 유저 [ 데이터 받기 ]
-      socket.on("name", (data) => {
-        // 서버가 전송한 데이터 이름, 전달할 데이터
-        console.log(data);
-      });
+      let inputVal = document.querySelector(".chat-input");
+      document
+        .querySelector(".chat-button")
+        .addEventListener("click", function () {
+          // 서버에 유저로 부터 입력 받은 대화내용 요청하기 ->
+          socket.emit("message", {
+            sender: "<%= user %>",
+            msg: inputVal.value,
+            room: "<%= result._id %>",
+          });
+          inputVal.value = "";
+          inputVal.focus();
+        });
 
       socket.on("broadcast", (data) => {
-        // 서버가 전송한 데이터 이름, 전달할 데이터
+        const isMine = data.sender === "<%= user %>";
+        const messageClass = isMine ? "mine" : "";
         console.log(data);
+        document
+          .querySelector(".chat-screen")
+          .insertAdjacentHTML(
+            "beforeend",
+            `<div class="chat-box ${messageClass}"><span>${data.message}</span></div>`
+          );
       });
     </script>
   </body>

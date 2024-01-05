@@ -10,7 +10,7 @@
     <%- include('nav.ejs') %>
 
     <!-- 채팅방 상세 페이지 -->
-    <%= JSON.stringify(result) %>
+    <%= JSON.stringify(result)[0]._id %>
 
     <div class="white-bg">
       <% for (let i = 0; i < result.length; i++){ %>
@@ -18,7 +18,8 @@
         <h4>
           <a href="/chat/detail/<%= result[i]._id %>"> 채팅방 <%= i %></a>
         </h4>
-        <p>채팅방입니당</p>
+
+        <p>채팅방 Id : <%= result[i]._id %></p>
       </div>
       <% } %>
     </div>

@@ -1,6 +1,8 @@
 /* 🟡🟢 express 라이브러리 사용하겠다  */
 const express = require("express");
 const app = express();
+
+/* 🟡🟢 dotenv  */
 require("dotenv").config();
 
 /* 🟡🟢 몽고디비랑 연결 */
@@ -178,7 +180,8 @@ app.get("/detail/:id", async (req, res) => {
     res.render("detail.ejs", { result, comments, username });
   } catch (e) {
     console.log("error: ", e);
-    res.status(404).send("404");
+    res.redirect("/login");
+    // res.status(404).send("404, 로그인이 되어있지 않습니다.");
   }
 });
 
@@ -397,52 +400,53 @@ app.post("/createComment", async (req, res) => {
 app.get("/chat/request", async (req, res) => {
   // console.log(req.user._id, req.query.writerId);
   await db.collection("chatroom").insertOne({
-    member: [req.user._id, new ObjectId(req.query.writerId)],
-    data: new Date(),
+    // _id 값은 자동으로 생성된다.
+    /* 채팅 참여자 */ member: [req.user._id, new ObjectId(req.query.writerId)],
+    /* 날짜 */ data: new Date(),
   });
-  res.redirect("/chat/list");
+  res.redirect("/chat/list"); // 채팅방 목록 페이지로 이전하기
 });
+
+// ↓↓↓↓↓↓↓↓↓↓↓↓   /chat/request  ->  /chat/list   ↓↓↓↓↓↓↓↓↓↓↓↓
 
 // ✏️ 자신이 속한 채팅방 목록 보기
 app.get("/chat/list", async (req, res) => {
-  console.log(req.user.username + " : " + req.user._id);
   let result = await db
     .collection("chatroom")
     // member 자체가 array이기 때문에 원하는 내용만 넣으면 그에 관한 내용을 찾아 준다.
-    .find({ member: req.user._id })
-    .toArray();
-  console.log(result);
+    .find({ member: req.user._id }) // 현재 로그인한 유저가 들어있는 모든 채팅방을 검색한다.
+    .toArray(); //그 내용을 배열로써 반환한한다.
+
   res.render("chatList.ejs", { result: result });
 });
 
 // ✏️ 해당되는 대화방 입장
 app.get("/chat/detail/:id", async (req, res) => {
+  let roomNum = req.params.id;
+  let user = req.user._id.toString() || "";
+  console.log(user);
   let result = await db
     .collection("chatroom")
-    .findOne({ _id: new ObjectId(req.params.id) });
-  res.render("chatDetail.ejs", { result });
+    .findOne({ _id: new ObjectId(roomNum) });
+
+  res.render("chatDetail.ejs", { result, user });
 });
 
 /* 유저가 웹 소캣 연결시 서버에서 코드 실행시키기  */
 io.on("connection", (socket) => {
   console.log("웹 소캣 연결함"); // 연결 잘 되었는지 확인用
 
-  // 1. 유저 -> 서버  [ 데이터 받기 ]
-  // .on  : 이벤트 리스너
-  socket.on("age", (data) => {
-    // 유저가 보낸 데이터, 실행 시킬 함수
-    console.log("data: ", data);
-
-    // 2. 서버 -> 웹 소켓 연결한 모든 유저 [ 데이터 보내기 ]
-    io.emit("name", "LeeJaeil"); // 데이터 이름, 전달할 데이터
+  /* 요청 받은 방 개설*/
+  socket.on("ask-join", (roomNum) => {
+    socket.join(roomNum);
   });
 
-  socket.on("aks-join", (data) => {
-    socket.join(data);
-  });
-
+  // -> 유저로 부터 받은 요청
   socket.on("message", (data) => {
-    console.log("data: ", data);
-    io.to(data.room).emit("broadcast", data.msg);
+    // io.to(data.room).emit("broadcast", data.msg);
+    io.to(data.room).emit("broadcast", {
+      sender: data.sender,
+      message: data.message,
+    });
   });
 });
