@@ -41,7 +41,7 @@
           // 서버에 유저로 부터 입력 받은 대화내용 요청하기 ->
           socket.emit("message", {
             sender: "<%= user %>",
-            msg: inputVal.value,
+            message: inputVal.value,
             room: "<%= result._id %>",
           });
           inputVal.value = "";
