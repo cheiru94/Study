@@ -45,18 +45,20 @@ const LocalStrategy = require("passport-local");
 const MongoStore = require("connect-mongo");
 
 app.use(passport.initialize());
-app.use(
-  session({
-    secret: "암호화에 쓸 비번", //세션을 만들 때 세션 문자열 같은 것을 암호화 해서 만들기 때문에 , 그 암호화 할때 쓸 비번 같은것을 여기다 입력한다.
-    resave: false, // 유저가 서버로 요청할 때마다 세션 갱신할 것인지
-    saveUninitialized: false, // 유저가 로그인을 안해도 세션을 만들 것인지
-    cookie: { maxAge: 60 * 60 * 1000 },
-    store: MongoStore.create({
-      mongoUrl: url,
-      dbName: process.env.DB_NAME,
-    }),
-  })
-);
+// app.use(
+const sessionMiddleware = session({
+  secret: "암호화에 쓸 비번", //세션을 만들 때 세션 문자열 같은 것을 암호화 해서 만들기 때문에 , 그 암호화 할때 쓸 비번 같은것을 여기다 입력한다.
+  resave: false, // 유저가 서버로 요청할 때마다 세션 갱신할 것인지
+  saveUninitialized: false, // 유저가 로그인을 안해도 세션을 만들 것인지
+  cookie: { maxAge: 60 * 60 * 1000 },
+  store: MongoStore.create({
+    mongoUrl: url,
+    dbName: process.env.DB_NAME,
+  }),
+});
+// );
+// express에 세션 미들웨어 사용 선언
+app.use(sessionMiddleware);
 app.use(passport.session());
 
 /* 🟡🟢 비밀번호 해쉬 처리 */
@@ -398,19 +400,47 @@ app.post("/createComment", async (req, res) => {
 
 // ✏️ 채팅방 만들기
 app.get("/chat/request", async (req, res) => {
-  // console.log(req.user._id, req.query.writerId);
-  await db.collection("chatroom").insertOne({
-    // _id 값은 자동으로 생성된다.
-    /* 채팅 참여자 */ member: [req.user._id, new ObjectId(req.query.writerId)],
-    /* 날짜 */ data: new Date(),
+  const currentUserID = req.user._id || "비로그인";
+  const writerID = new ObjectId(req.query.writerId);
+
+  // 이미 로그인 한 사용자가 해당 글을 게시한 사용자와의 대화기록이 있는지 확인
+  const existingChatroom = await db.collection("chatroom").findOne({
+    member: {
+      $all: [currentUserID, writerID],
+    },
   });
-  res.redirect("/chat/list"); // 채팅방 목록 페이지로 이전하기
+
+  // 확인용
+  console.log("반환값:", !!existingChatroom);
+
+  if (existingChatroom) {
+    // 있다면 새로운 방 생성 x
+    res.redirect("/chat/list");
+  } else {
+    // 없다면 새로운 방 생성
+    await db.collection("chatroom").insertOne({
+      member: [currentUserID, writerID],
+      data: new Date(),
+    });
+    res.redirect("/chat/list");
+  }
+  // // if (condition) {
+  // await db.collection("chatroom").insertOne({
+  //   // _id 값은 자동으로 생성된다.
+  //   /* 채팅 참여자 */ member: [req.user._id, new ObjectId(req.query.writerId)],
+  //   /* 날짜 */ data: new Date(),
+  // });
+  // res.redirect("/chat/list"); // 채팅방 목록 페이지로 이전하기
+  // // }
 });
 
 // ↓↓↓↓↓↓↓↓↓↓↓↓   /chat/request  ->  /chat/list   ↓↓↓↓↓↓↓↓↓↓↓↓
 
 // ✏️ 자신이 속한 채팅방 목록 보기
 app.get("/chat/list", async (req, res) => {
+  let user = req.user._id.toString() || "";
+  let username = req.user.username.toString() || "";
+  console.log("로그인한 유저: ", user, "|", username);
   let result = await db
     .collection("chatroom")
     // member 자체가 array이기 때문에 원하는 내용만 넣으면 그에 관한 내용을 찾아 준다.
@@ -423,17 +453,36 @@ app.get("/chat/list", async (req, res) => {
 // ✏️ 해당되는 대화방 입장
 app.get("/chat/detail/:id", async (req, res) => {
   let roomNum = req.params.id;
+
   let user = req.user._id.toString() || "";
   console.log(user);
+
   let result = await db
     .collection("chatroom")
     .findOne({ _id: new ObjectId(roomNum) });
 
-  res.render("chatDetail.ejs", { result, user });
+  let chatMessage = await db
+    .collection("chatMessage")
+    .find({ parentRoom: new ObjectId(roomNum) })
+    .toArray();
+
+  console.log("chatMessage", chatMessage);
+  res.render("chatDetail.ejs", { result, user, chatMessage });
 });
 
+io.use((socket, next) => {
+  sessionMiddleware(socket.request, {}, next);
+});
 /* 유저가 웹 소캣 연결시 서버에서 코드 실행시키기  */
 io.on("connection", (socket) => {
+  if (socket.request.session.passport && socket.request.session.passport.user) {
+    console.log(
+      "소켓에 저장된 내용: ",
+      socket.request.session.passport.user.id
+    );
+  } else {
+    console.log("사용자가 로그인되지 않았습니다.");
+  }
   console.log("웹 소캣 연결함"); // 연결 잘 되었는지 확인用
 
   /* 요청 받은 방 개설*/
@@ -442,9 +491,15 @@ io.on("connection", (socket) => {
   });
 
   // -> 유저로 부터 받은 요청
-  socket.on("message", (data) => {
-    // io.to(data.room).emit("broadcast", data.msg);
-    io.to(data.room).emit("broadcast", {
+  socket.on("message-send", async (data) => {
+    console.log("data: ", data);
+    // 💿 db에 요청 받은 내용 저장하기 💿
+    await db.collection("chatMessage").insertOne({
+      parentRoom: new ObjectId(data.room),
+      content: data.message,
+      who: new ObjectId(socket.request.session.passport.user.id),
+    });
+    io.to(data.room).emit("message-broadcast", {
       sender: data.sender,
       message: data.message,
     });
