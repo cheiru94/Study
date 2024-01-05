@@ -11,10 +11,16 @@ const { MongoClient, ObjectId } = require("mongodb");
 let connectDB = require("./database.js"); // db 파일에서 불러와서 사용함
 let db;
 const url = process.env.DB_URL;
+let changeStream
 connectDB // 불러온 것 적용시키기 : 여기까지만 하면 계속해서 DB에서 불러와 사용할 필요가 없다
   .then((client) => {
     console.log("DB연결 성공");
     db = client.db(process.env.DB_NAME); // ⭐️ 접속할DB 이름 ⭐️
+
+
+    let condition = [{ $match: { operationType:'insert'} }]
+    /* post 컬렉션의 documentrk 생성 수정 삭제 될때마다 작동 */
+    changeStream = db.collection('post').watch(condition);
 
     /* 🟡🟢 서버 띄우기 : app.listen( 포트번호 , */
     server.listen(process.env.PORT, () => {
@@ -89,6 +95,7 @@ const upload = multer({
 /* 🟡🟢 SOKET.IO */
 const { createServer } = require("http");
 const { Server } = require("socket.io");
+const { setInterval } = require("timers/promises");
 const server = createServer(app);
 const io = new Server(server);
 
@@ -227,10 +234,12 @@ app.put("/edit", async (req, res) => {
 /* 🟡 삭제 요청  */
 app.delete("/delete", async (req, res) => {
   // console.log(req.query);
+  console.log('현 로그인유저:', req.user._id);
   await db.collection("post").deleteOne({
     _id: new ObjectId(req.query.docid),
-    user: new ObjectId(req.user_id),
+    user: new ObjectId(req.user._id),
   });
+  console.log("삭제완료");
   res.send("삭제완료");
 });
 
@@ -504,4 +513,22 @@ io.on("connection", (socket) => {
       message: data.message,
     });
   });
+});
+
+/* SSE 구현 */
+app.get('/stream/list',  (req, res) => {
+
+  res.writeHead(200, {
+    "Connection": "keep-alive",
+    "Content-Type": "text/event-stream",
+    "Cache-Control": "no-cache",
+  })
+
+  
+  changeStream.on('change', (result) => {
+    console.log(result.fullDocument);
+    res.write('event: msg\n');
+    res.write(`data: ${JSON.stringify(result.fullDocument)}\n\n`);
+  })
+
 });
