@@ -1,3 +1,4 @@
+const cookieParser = require("cookie-parser");
 const express = require("express");
 const jwt = require("jsonwebtoken");
 
@@ -23,6 +24,9 @@ let refreshTokens = [];
 //body로 들어오는 것 분석
 app.use(express.json());
 
+// cookies로 들어오는 것 분석
+app.use(cookieParser());
+
 app.post("/login", (req, res) => {
   const username = req.body.username;
   const user = { name: username }; // payload
@@ -36,7 +40,7 @@ app.post("/login", (req, res) => {
   // 임시로 DB대신 위에있는 배열에 저장
   refreshTokens.push(refreshToken);
 
-  // refreshtoken을 쿠키에 넣기
+  // refreshtoken을 쿠키에 넣기 :  res.cookie(쿠키의 이름 , 쿠키의 값[refreshtoken] , 추가 옵션)
   res.cookie("refreshtoken", refreshToken, {
     httpOnly: true, // xxs공격 방지용 : js를 이용해서 탈취하거나 조작할수 없게 설정
     maxAge: 24 * 60 * 60 * 1000,
@@ -70,6 +74,35 @@ function authMiddileware(req, res, next) {
     next();
   });
 }
+
+/* refresh 토큰으로 access토큰 재발급 */
+app.get("/refresh", (req, res) => {
+  // body => parsing => req.body
+  // cookies => parsing => req.cookies
+
+  // cookie-parser로 coolies 가져오기
+  const cookies = req.cookies;
+
+  if (!cookies?.refreshtoken) return sendStatus(403);
+
+  const refreshToken = cookies.refreshtoken;
+
+  // refreshToken이 데이터베이스에 있는 토큰인지 확인
+  if (!refreshTokens.includes(refreshToken)) return res.sendStatus(403);
+
+  // token이 유효한 토큰인지 확인
+  jwt.verify(refreshToken, refreshSecretText, (err, user) => {
+    if (err) return res.sendStatus(403);
+
+    // accessToken 생성
+    const accessToken = jwt.sign({ name: user.name }, secretText, {
+      expiresIn: "30s",
+    });
+    res.json({ accessToken: accessToken });
+  });
+
+  console.log("req.cookies : ", req.cookies);
+});
 
 const port = 4000;
 app.listen(port, () => {
