@@ -1,9 +1,12 @@
 const cookieParser = require("cookie-parser");
 const express = require("express");
+
+/* 토큰 */
 const jwt = require("jsonwebtoken");
 
 const app = express();
 
+/* secretText는 임의로 작성 */
 const secretText = "superSecret";
 const refreshSecretText = "superUltraSecret";
 
@@ -13,7 +16,7 @@ const posts = [
     title: "Post1",
   },
   {
-    username: "Hasebe",
+    username: "Betty",
     title: "Post2",
   },
 ];
