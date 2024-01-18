@@ -1,10 +1,11 @@
 const mongoose = require("mongoose");
+const bcrypt = require("bcrypt");
 
 const userSchema = mongoose.Schema({
   email: {
     type: String,
     trim: true,
-    unique: true,
+    unique: true, // 똑같은 email을 사용하지 못하게
   },
   password: {
     type: String,
@@ -13,9 +14,10 @@ const userSchema = mongoose.Schema({
   googleId: {
     type: String,
     unique: true,
-    sparse: true,
+    sparse: true, // 중복인 값을 방지하기 위함
   },
 });
 
+/* 스키마로 모델 생성하기 :  mongoose.model( 모델이름, 스키마 )*/
 const User = mongoose.model("User", userSchema);
 module.exports = User;

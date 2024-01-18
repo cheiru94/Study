@@ -1,10 +1,15 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const path = require("path");
+const User = require("./models/users.model");
 const app = express();
 
 app.use(express.json());
-app.use(express.urlencoded({ extended: false })); // form안에 잇는 부분을 파싱해서 가져오기 위해 사용
+app.use(express.urlencoded({ extended: false })); // form안에 있는 부분을 파싱해서 가져오기 위해 사용
+
+/* views 엔진 셋업 : 디렉토리 이름, 경로*/
+app.set("views", path.join(__dirname, "views")); // 번째 인자인 "views"는 설정의 식별자
+app.set("view engine", "ejs"); /* view엔진은 ejs를 사용하 겠다. */
 
 mongoose.set("strictQuery", false);
 mongoose
@@ -18,8 +23,27 @@ mongoose
     console.log("error 내용 :", err);
   });
 
+/* 정적파일 연결시키기 */
 app.use("/static", express.static(path.join(__dirname, "public")));
 
 app.listen(4000, () => {
   console.log("🟢 http://localhost:4000 으로 서버 실행 중");
+});
+
+app.get("/login", (req, res) => {
+  res.render("login");
+});
+app.post("/login", (req, res) => {});
+
+app.get("/signup", (req, res) => {
+  res.render("signup");
+});
+app.post("/signup", async (req, res) => {
+  // User 객체를 생성
+  const user = new User(req.body);
+  // User 컬렉션(테이블)에 user를 저장
+  try {
+    await user.save();
+    return res.status(200).json({ success: true });
+  } catch (error) {}
 });
