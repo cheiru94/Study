@@ -4,6 +4,10 @@ const path = require("path");
 const User = require("./models/users.model");
 const app = express();
 
+app.use(passport.initialize());
+app.use(passport.session());
+require("./config/passport");
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: false })); // form안에 있는 부분을 파싱해서 가져오기 위해 사용
 
@@ -33,7 +37,27 @@ app.listen(4000, () => {
 app.get("/login", (req, res) => {
   res.render("login");
 });
-app.post("/login", (req, res) => {});
+
+app.post("/login", (req, res, next) => {
+  passport.authenticate("local", (err, user, info) => {
+    if (err) {
+      return next(err); // express의 에러처리기로 보내기
+    }
+    if (!user) {
+      // 찾는 유저나, 비밀번호가 틀렸을 때
+      console.log("no user found 😅");
+      return res.json({ msg: info });
+    }
+
+    /* 유저가 있고, 비밀번호도 있을 떄 */
+    req.login(user, (err) => {
+      if (err) {
+        return next(err);
+      }
+      res.redirect("/");
+    });
+  })(req, res, next);
+});
 
 app.get("/signup", (req, res) => {
   res.render("signup");
@@ -45,5 +69,7 @@ app.post("/signup", async (req, res) => {
   try {
     await user.save();
     return res.status(200).json({ success: true });
-  } catch (error) {}
+  } catch (error) {
+    console.log(error);
+  }
 });
