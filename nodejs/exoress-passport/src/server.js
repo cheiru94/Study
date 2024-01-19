@@ -5,6 +5,10 @@ const passport = require("passport");
 const app = express();
 const path = require("path");
 const User = require("./models/users.model");
+const {
+  checkAuthenticated,
+  checkNotAuthenticated,
+} = require("./middlewares/auth");
 
 const cookieEncryptionKey = "supersecret-key";
 
@@ -26,7 +30,7 @@ app.use(function (request, response, next) {
   next();
 });
 
-app.use(passport.initialize());
+app.use(passport.initialize()); //초기화 단계에서 각 요청(request)에 Passport를 사용할 수 있도록 설정
 app.use(passport.session());
 require("./config/passport");
 
@@ -55,19 +59,22 @@ app.listen(4000, () => {
 /* 정적파일 연결시키기 */
 app.use("/static", express.static(path.join(__dirname, "public")));
 
-app.get("/", (req, res) => {
+app.get("/", checkAuthenticated, (req, res) => {
   res.render("index");
 });
 
-app.get("/login", (req, res) => {
+/* 😄 로그인 */
+app.get("/login", checkNotAuthenticated, (req, res) => {
+  console.log(req.isAuthenticated());
   res.render("login");
 });
 
 app.post("/login", (req, res, next) => {
   /* 미들웨어 안에 있는 미들웨어 */
   // passport.authenticate("local" 까지가 new LocalStrategy를 실행
-  //둘째 파라미터(user)는 아이디/비번 검증 완료된 유저정보가 들어옴
+  //🔥 user 변수에 들어가는 값은 LocalStrategy에서 인증을 시도한 후에 비동기적으로 반환된 값
   passport.authenticate("local", (err, user, info) => {
+    console.log("2. 받아온 user 내용 : ", user);
     if (err) {
       return next(err); // express의 에러처리기로 보내기
     }
@@ -80,7 +87,8 @@ app.post("/login", (req, res, next) => {
     /* 🟡 유저가 있고, 비밀번호도 있을 떄 🟡 */
     // LocalStrategy의 done()정보를 토대로, 로그인 성공 시 사용자 정보 객체와 함께 req.login()를 자동으로 호출
     req.logIn(user, (err) => {
-      // req.login 메서드가 passport.serializeUser() 호출 : 세션 만들기
+      // 🟡 req.login 메서드가 passport.serializeUser() 호출 : 세션 만들기
+
       if (err) {
         return next(err);
       }
@@ -89,9 +97,11 @@ app.post("/login", (req, res, next) => {
   })(req, res, next);
 });
 
-app.get("/signup", (req, res) => {
+/* 😄 회원 가입 */
+app.get("/signup", checkNotAuthenticated, (req, res) => {
   res.render("signup");
 });
+
 app.post("/signup", async (req, res) => {
   // User 객체를 생성
   const user = new User(req.body);

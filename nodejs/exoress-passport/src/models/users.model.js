@@ -17,8 +17,8 @@ const userSchema = mongoose.Schema({
   },
 });
 
+// password ==  plainPassword
 userSchema.methods.comparePassword = function (plainPassword, cb) {
-  // bcrypt compare 비교
   // plainPassword = 클라이언트가 입력한 비밀번호 , this.password = 데이터베이스에 저장된 비밀번호
   if (plainPassword == this.password) {
     cb(null, true); // null은 에러 매개변수
