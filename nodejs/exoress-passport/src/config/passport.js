@@ -1,15 +1,32 @@
 const passport = require("passport");
+const User = require("../models/users.model");
 const LocalStrategy = require("passport-local").Strategy;
+
+passport.serializeUser((user, done) => {
+  done(null, user.id);
+});
+
+passport.deserializeUser((id, done) => {
+  User.findById(id)
+    .then((user) => {
+      done(null, user);
+    })
+    .catch((err) => {
+      done(err);
+    });
+});
+
 passport.use(
+  "local",
   new LocalStrategy(
     { usernameField: "email", passwordField: "password" },
-    /* 사용자가 form에서 입력한 정보를 가져온다. done은 콜백함수 : 인증과정이 완료되었을 떄 호출되며, 인증의 성공 유무에 따라서 에러를 passport에 알려준다. */
-    (email, password, done) => {
-      User.findOne({ email: email.toLocaleLowerCase() }, (err, user) => {
-        if (err) return done(err);
+    async (email, password, done) => {
+      try {
+        const user = await User.findOne({ email: email.toLocaleLowerCase() });
 
-        if (!user)
+        if (!user) {
           return done(null, false, { msg: `Email ${email} is not found` });
+        }
 
         user.comparePassword(password, (err, isMatch) => {
           if (err) return done(err);
@@ -18,9 +35,13 @@ passport.use(
             return done(null, user);
           }
 
-          return done(null, false, { msg: "Invalid email or password 🤔" });
+          return done(null, false, {
+            msg: "이메일 혹인 비밀번호가 틀린거 같아... 🤔",
+          });
         });
-      });
+      } catch (err) {
+        return done(err);
+      }
     }
   )
 );

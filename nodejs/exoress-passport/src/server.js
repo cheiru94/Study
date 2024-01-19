@@ -1,8 +1,30 @@
+const cookieSession = require("cookie-session");
 const express = require("express");
-const mongoose = require("mongoose");
+const { default: mongoose } = require("mongoose");
+const passport = require("passport");
+const app = express();
 const path = require("path");
 const User = require("./models/users.model");
-const app = express();
+
+const cookieEncryptionKey = "supersecret-key";
+
+app.use(
+  cookieSession({ name: "coockie-session-my", keys: [cookieEncryptionKey] })
+);
+
+app.use(function (request, response, next) {
+  if (request.session && !request.session.regenerate) {
+    request.session.regenerate = (cb) => {
+      cb();
+    };
+  }
+  if (request.session && !request.session.save) {
+    request.session.save = (cb) => {
+      cb();
+    };
+  }
+  next();
+});
 
 app.use(passport.initialize());
 app.use(passport.session());
@@ -27,11 +49,14 @@ mongoose
     console.log("error 내용 :", err);
   });
 
+app.listen(4000, () => {
+  console.log("🟢 http://localhost:4000 으로 서버 실행 중");
+});
 /* 정적파일 연결시키기 */
 app.use("/static", express.static(path.join(__dirname, "public")));
 
-app.listen(4000, () => {
-  console.log("🟢 http://localhost:4000 으로 서버 실행 중");
+app.get("/", (req, res) => {
+  res.render("index");
 });
 
 app.get("/login", (req, res) => {
@@ -39,6 +64,9 @@ app.get("/login", (req, res) => {
 });
 
 app.post("/login", (req, res, next) => {
+  /* 미들웨어 안에 있는 미들웨어 */
+  // passport.authenticate("local" 까지가 new LocalStrategy를 실행
+  //둘째 파라미터(user)는 아이디/비번 검증 완료된 유저정보가 들어옴
   passport.authenticate("local", (err, user, info) => {
     if (err) {
       return next(err); // express의 에러처리기로 보내기
@@ -49,8 +77,10 @@ app.post("/login", (req, res, next) => {
       return res.json({ msg: info });
     }
 
-    /* 유저가 있고, 비밀번호도 있을 떄 */
-    req.login(user, (err) => {
+    /* 🟡 유저가 있고, 비밀번호도 있을 떄 🟡 */
+    // LocalStrategy의 done()정보를 토대로, 로그인 성공 시 사용자 정보 객체와 함께 req.login()를 자동으로 호출
+    req.logIn(user, (err) => {
+      // req.login 메서드가 passport.serializeUser() 호출 : 세션 만들기
       if (err) {
         return next(err);
       }

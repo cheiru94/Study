@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-const bcrypt = require("bcrypt");
 
 const userSchema = mongoose.Schema({
   email: {
@@ -22,7 +21,7 @@ userSchema.methods.comparePassword = function (plainPassword, cb) {
   // bcrypt compare 비교
   // plainPassword = 클라이언트가 입력한 비밀번호 , this.password = 데이터베이스에 저장된 비밀번호
   if (plainPassword == this.password) {
-    cb(null, true);
+    cb(null, true); // null은 에러 매개변수
   } else {
     cb(null, false);
   }
