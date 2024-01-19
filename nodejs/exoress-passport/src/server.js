@@ -31,7 +31,7 @@ app.use(function (request, response, next) {
 });
 
 app.use(passport.initialize()); //초기화 단계에서 각 요청(request)에 Passport를 사용할 수 있도록 설정
-app.use(passport.session());
+app.use(passport.session()); // passport는 사용자 세션을 지속적으로 유지하고 로그인 상태를 확인할 수 있
 require("./config/passport");
 
 app.use(express.json());
@@ -95,6 +95,15 @@ app.post("/login", (req, res, next) => {
       res.redirect("/");
     });
   })(req, res, next);
+});
+
+app.post("/logout", (req, res) => {
+  req.logOut((err) => {
+    if (err) {
+      return next(err);
+    }
+    res.redirect("/login");
+  });
 });
 
 /* 😄 회원 가입 */
