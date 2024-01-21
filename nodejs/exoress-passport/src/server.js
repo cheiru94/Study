@@ -10,10 +10,13 @@ const {
   checkNotAuthenticated,
 } = require("./middlewares/auth");
 
-const cookieEncryptionKey = "supersecret-key";
+require("dotenv").config();
 
 app.use(
-  cookieSession({ name: "coockie-session-my", keys: [cookieEncryptionKey] })
+  cookieSession({
+    name: "coockie-session-my",
+    keys: [process.env.COOKIE_ENCRYPTION_KEY],
+  })
 );
 
 app.use(function (request, response, next) {
@@ -42,10 +45,9 @@ app.set("views", path.join(__dirname, "views")); // 번째 인자인 "views"는 
 app.set("view engine", "ejs"); /* view엔진은 ejs를 사용하 겠다. */
 
 mongoose.set("strictQuery", false);
+
 mongoose
-  .connect(
-    "mongodb+srv://admin:admin@cluster0.ha7x0tk.mongodb.net/?retryWrites=true&w=majority"
-  )
+  .connect(process.env.MONGO_URI)
   .then(() => {
     console.log("🟢 mongoDB 연결 완료");
   })
@@ -53,9 +55,6 @@ mongoose
     console.log("error 내용 :", err);
   });
 
-app.listen(4000, () => {
-  console.log("🟢 http://localhost:4000 으로 서버 실행 중");
-});
 /* 정적파일 연결시키기 */
 app.use("/static", express.static(path.join(__dirname, "public")));
 
@@ -97,6 +96,7 @@ app.post("/login", (req, res, next) => {
   })(req, res, next);
 });
 
+/* 로그아웃 */
 app.post("/logout", (req, res) => {
   req.logOut((err) => {
     if (err) {
@@ -107,10 +107,13 @@ app.post("/logout", (req, res) => {
 });
 
 /* 😄 회원 가입 */
+
+// 회원가입 페이지 get
 app.get("/signup", checkNotAuthenticated, (req, res) => {
   res.render("signup");
 });
 
+// 회원가입 페이지 post
 app.post("/signup", async (req, res) => {
   // User 객체를 생성
   const user = new User(req.body);
@@ -121,4 +124,22 @@ app.post("/signup", async (req, res) => {
   } catch (error) {
     console.log(error);
   }
+});
+
+/* Google OAuth */
+app.get("/auth/google", passport.authenticate("google"));
+app.get(
+  "/auth/google/callback",
+  passport.authenticate("google", {
+    successReturnToOrRedirect: "/",
+    failureRedirect: "/login",
+  })
+);
+
+const config = require("config");
+const serverConfig = config.get("server");
+
+const port = serverConfig.port;
+app.listen(port, () => {
+  console.log(`🟢 http://localhost:${port} 으로 서버 실행 중`);
 });
