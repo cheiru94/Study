@@ -50,6 +50,7 @@ app.set("view engine", "ejs"); /* view엔진은 ejs를 사용하 겠다. */
 
 mongoose.set("strictQuery", false);
 
+/* DB 연결 */
 mongoose
   .connect(process.env.MONGO_URI)
   .then(() => {

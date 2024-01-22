@@ -54,11 +54,17 @@ usersRouter.post("/signup", async (req, res) => {
   // User 컬렉션(테이블)에 user를 저장
   try {
     await user.save();
-    return res.status(200).json({ success: true });
+
+    // 📧 이메일 보내기
+    sendMail("cheiru94@gmai.com", "이재일", "welcome");
+
+    res.redirect("login");
+    // return res.status(200).json({ success: true });
   } catch (error) {
     console.log(error);
   }
 });
+// 9bda0a7e56893d81b04eed7524b3dfd0 카카오키
 
 /* 📎 Google OAuth */
 usersRouter.get("/google", passport.authenticate("google"));
