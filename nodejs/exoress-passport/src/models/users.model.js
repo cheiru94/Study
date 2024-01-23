@@ -16,6 +16,11 @@ const userSchema = mongoose.Schema({
     unique: true,
     sparse: true, // 중복인 값을 방지하기 위함
   },
+  kakaoId: {
+    type: String,
+    unique: true,
+    sparse: true, // 중복인 값을 방지하기 위함
+  },
 });
 
 const salutRounds = 10;

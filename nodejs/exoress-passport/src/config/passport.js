@@ -2,6 +2,7 @@ const passport = require("passport");
 const User = require("../models/users.model");
 const LocalStrategy = require("passport-local").Strategy;
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
+const KakaoStrategy = require("passport-kakao").Strategy;
 
 /* 🟡 serializeUser */
 passport.serializeUser((user, done) => {
@@ -31,9 +32,9 @@ passport.deserializeUser((id, done) => {
     });
 });
 
-/* 로컬 전략 */
+/* 🟣 로컬 전략 */
 const LocalStrategyConfig = new LocalStrategy(
-  /* 아이디/비번이 DB와 일치하는지 검증  */
+  // 1. 아이디/비번이 DB와 일치하는지 검증
   // passport.authenticate('local')로 실행된다.
   { usernameField: "email", passwordField: "password" },
   // 사용자가 form 태그에서 name으로 입력한 email과, password가
@@ -69,7 +70,7 @@ const LocalStrategyConfig = new LocalStrategy(
 );
 passport.use("local", LocalStrategyConfig);
 
-/* 구글 전략 */
+/* 🟣 구글 전략 */
 // require("dotenv").config();
 
 const googleStrategyConfig = new GoogleStrategy(
@@ -103,3 +104,31 @@ const googleStrategyConfig = new GoogleStrategy(
 );
 // passport.use를 사용하여 Google 전략을 Passport에 등록
 passport.use("google", googleStrategyConfig);
+
+/* 🟣 카카오 전략  */
+const kakaoStrategyConfig = new KakaoStrategy(
+  {
+    clientID: process.env.GOOGLE_CLIENT_ID,
+    callbackURL: "/auth/kakao/callback", // 사용자가 로그인 성공 시 이 URL로 리디렉션
+  },
+  (accessToken, refreshToken, profile, done) => {
+    User.findOne({ kakaoId: profile.id }, (err, existingUser) => {
+      if (err) {
+        return done(err);
+      }
+      if (existingUser) {
+        return done(null, existingUser);
+      } else {
+        const user = new User();
+        user.kakaoId = profile.id;
+        user.email = profile._json.kakao_account.email;
+        user.save((err) => {
+          if (err) {
+            return done(err);
+          }
+          done(null, user);
+        });
+      }
+    });
+  }
+);

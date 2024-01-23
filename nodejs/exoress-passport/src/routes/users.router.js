@@ -64,10 +64,10 @@ usersRouter.post("/signup", async (req, res) => {
     console.log(error);
   }
 });
-// 9bda0a7e56893d81b04eed7524b3dfd0 카카오키
 
 /* 📎 Google OAuth */
 usersRouter.get("/google", passport.authenticate("google"));
+
 usersRouter.get(
   "/google/callback",
   passport.authenticate("google", {
@@ -76,4 +76,14 @@ usersRouter.get(
   })
 );
 
+/* 📎 Kakao OAuth */
+usersRouter.get("/kakao", passport.authenticate("kakao"));
 module.exports = usersRouter;
+
+usersRouter.get(
+  "/kakao/callback",
+  passport.authenticate("kakao", {
+    successReturnToOrRedirect: "/",
+    failureRedirect: "/login",
+  })
+);
