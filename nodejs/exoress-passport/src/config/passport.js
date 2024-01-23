@@ -108,27 +108,25 @@ passport.use("google", googleStrategyConfig);
 /* 🟣 카카오 전략  */
 const kakaoStrategyConfig = new KakaoStrategy(
   {
-    clientID: process.env.GOOGLE_CLIENT_ID,
-    callbackURL: "/auth/kakao/callback", // 사용자가 로그인 성공 시 이 URL로 리디렉션
+    clientID: process.env.KAKAO_CLIENT_ID,
+    callbackURL: "http://localhost:3000/auth/kakao/callback", // 사용자가 로그인 성공 시 이 URL로 리디렉션
   },
-  (accessToken, refreshToken, profile, done) => {
-    User.findOne({ kakaoId: profile.id }, (err, existingUser) => {
-      if (err) {
-        return done(err);
-      }
+  async (accessToken, refreshToken, profile, done) => {
+    try {
+      const existingUser = await User.findOne({ kakaoId: profile.id }); // await 사용
       if (existingUser) {
         return done(null, existingUser);
       } else {
         const user = new User();
         user.kakaoId = profile.id;
         user.email = profile._json.kakao_account.email;
-        user.save((err) => {
-          if (err) {
-            return done(err);
-          }
-          done(null, user);
-        });
+        await user.save(); // await 사용
+        done(null, user);
       }
-    });
+    } catch (err) {
+      done(err);
+    }
   }
 );
+
+passport.use("kakao", kakaoStrategyConfig);
