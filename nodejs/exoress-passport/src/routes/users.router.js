@@ -34,8 +34,8 @@ usersRouter.post("/login", (req, res, next) => {
 });
 
 /* 📎 로그아웃 */
-usersRouter.post("/auth/logout", (req, res) => {
-  req.logOut((err) => {
+usersRouter.post("/logout", (req, res, next) => {
+  req.logOut(function (err) {
     if (err) {
       return next(err);
     }
@@ -51,15 +51,13 @@ usersRouter.get("/signup", checkNotAuthenticated, (req, res) => {
 usersRouter.post("/signup", async (req, res) => {
   // User 객체를 생성
   const user = new User(req.body);
-  // User 컬렉션(테이블)에 user를 저장
   try {
+    // User 컬렉션(테이블)에 user를 저장
     await user.save();
 
     // 📧 이메일 보내기
     sendMail("cheiru94@gmai.com", "이재일", "welcome");
-
-    res.redirect("login");
-    // return res.status(200).json({ success: true });
+    res.redirect("/login");
   } catch (error) {
     console.log(error);
   }
@@ -78,7 +76,6 @@ usersRouter.get(
 
 /* 📎 Kakao OAuth */
 usersRouter.get("/kakao", passport.authenticate("kakao"));
-module.exports = usersRouter;
 
 usersRouter.get(
   "/kakao/callback",
@@ -87,3 +84,5 @@ usersRouter.get(
     failureRedirect: "/login",
   })
 );
+
+module.exports = usersRouter;

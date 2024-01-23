@@ -23,6 +23,7 @@ app.use(
   })
 );
 
+// 쿠키세션 미들웨어 초기화 후 재생성 및 저장 등록하기
 app.use(function (request, response, next) {
   if (request.session && !request.session.regenerate) {
     request.session.regenerate = (cb) => {

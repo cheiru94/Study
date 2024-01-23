@@ -11,7 +11,7 @@ mainRouter.get("/", checkAuthenticated, (req, res) => {
 
 /* 😄 로그인 */
 mainRouter.get("/login", checkNotAuthenticated, (req, res) => {
-  console.log(req.isAuthenticated());
+  console.log("로그인 상태 : ", req.isAuthenticated());
   res.render("login");
 });
 

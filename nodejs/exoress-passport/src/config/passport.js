@@ -78,7 +78,7 @@ const googleStrategyConfig = new GoogleStrategy(
   {
     clientID: process.env.GOOGLE_CLIENT_ID,
     clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-    callbackURL: "/auth/google/callback", // 사용자가 로그인 성공 시 이 URL로 리디렉션
+    callbackURL: "http://localhost:3000/auth/google/callback", // 사용자가 로그인 성공 시 이 URL로 리디렉션
     scope: ["email", "profile"],
   },
   // Google 인증이 성공하면 실행되는 콜백 함수
