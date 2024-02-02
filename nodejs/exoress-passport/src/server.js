@@ -68,7 +68,7 @@ app.use("/static", express.static(path.join(__dirname, "public")));
 app.use("/", mainRouter);
 
 /* USERS_ROUTER */
-app.use("/auth", usersRouter);
+app.use("/auth", usersRouter); // 라우터로 Oauth를 통해 로그인 요청
 
 /* 서버 실행 */
 const port = serverConfig.port;

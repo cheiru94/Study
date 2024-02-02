@@ -75,7 +75,7 @@ usersRouter.get(
 );
 
 /* 📎 Kakao OAuth */
-usersRouter.get("/kakao", passport.authenticate("kakao"));
+usersRouter.get("/kakao", passport.authenticate("kakao")); // 카카오 페이지로 이동
 
 usersRouter.get(
   "/kakao/callback",
