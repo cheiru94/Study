@@ -23,12 +23,14 @@ function App() {
 
   /* 전송 확인용 */
   const onSubmitMethod = (data: LoginForm) => {
+    // data : 제출된 폼 데이터
     console.log(data);
   };
 
   return (
     <div className="form-container">
       <h1>Log in</h1>
+      {/* handleSubmit : 함수는 양식이 제출될 때 호출되어야 하는 콜백 함수를 받습니다. */}
       <form onSubmit={handleSubmit(onSubmitMethod)}>
         {/* 1. 이름 */}
         <label htmlFor="이름">이름</label>
