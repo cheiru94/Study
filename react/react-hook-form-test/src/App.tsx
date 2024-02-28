@@ -15,7 +15,7 @@ function App() {
   const {
     register,
     handleSubmit,
-    formState: { errors }, // 공란을 입력하라는 등의 메세지를 출력해준다.
+    formState: { errors }, // 왜 에러가 났는지 여기 다 들어있다 ,  공란을 입력하라는 등의 메세지를 출력해준다.
   } = useForm<LoginForm>({
     mode: "onBlur", // 모드 설정 : 어떨 때 useForm를 실행시킬 것인지 / onChange도 가능
     resolver: zodResolver(validationSchema), //폼의 유효성 검사를 어떻게 처리할지를 결정 : zod 라이브러리 실행
@@ -23,7 +23,7 @@ function App() {
 
   /* 전송 확인용 */
   const onSubmitMethod = (data: LoginForm) => {
-    // data : 제출된 폼 데이터
+    // data : 제출된 폼에 등록된 입력 필드들의 값
     console.log(data);
   };
 

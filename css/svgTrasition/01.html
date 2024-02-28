@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      .hand {
+        position: absolute;
+        left: 400px;
+        top: 100px;
+        width: 200px;
+      }
+      .key {
+        position: absolute;
+        left: 100px;
+        top: 50px;
+        width: 150px;
+        transition: 1s;
+      }
+    </style>
+  </head>
+  <body>
+    <img class="hand" src="images/hand.svg" alt="ss" />
+    <object class="key" data="images/key.svg" type="image/svg+xml"></object>
+
+    <script>
+      const $hand = document.querySelector(".hand");
+      const $key = document.querySelector(".key");
+
+      let isCatch = false;
+
+      $hand.addEventListener("click", (e) => {
+        if (isCatch) {
+          $key.style.transform = `scale(1) translateX(0px) translateY(0px)`;
+        } else {
+          const handRect = $hand.getBoundingClientRect(); // 객체의 위치를 찾기
+          const leftPosition = handRect.left + 150;
+          const topPosition = handRect.top - 50;
+
+          $key.style.transform = `scale(0.5) translateX(${leftPosition}px) translateY(${topPosition}px)`;
+        }
+      });
+
+      //  트랜지션중 눌러도 계속해서 반응하지 않게
+      $key.addEventListener("transitionend", (e) => {
+        // .key의 트랜지션이 다 끝나는 시점에 실행
+        isCatch = !isCatch;
+      });
+    </script>
+  </body>
+</html>
