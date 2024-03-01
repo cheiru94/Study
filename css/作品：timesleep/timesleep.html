@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>作品名：人生</title>
+    <style>
+      body {
+        overflow: hidden;
+        background-color: black;
+      }
+
+      .star {
+        position: absolute;
+        width: 3px;
+        height: 3px;
+        /* font-size: 0; */
+        border-radius: 50%;
+        color: rgb(173, 10, 10);
+      }
+    </style>
+  </head>
+  <body>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/web-animations/2.3.2/web-animations-next.min.js"></script>
+    <script type="module">
+      import Star from "./Star.js";
+
+      // 원의 개수
+      const numberOfStars = 200;
+      const canvasWidth = window.innerWidth;
+      const canvasHeight = window.innerHeight;
+      const zModifier = canvasHeight; // y랑 구별하기 위해서
+      const effects = [];
+
+      let x, y, z;
+      let scale;
+      let keyFrames, options;
+      let pointFrom, pointTo;
+      let star;
+
+      // 3D化
+      function set3DPoint(x, y, z) {
+        const scale = zModifier / (zModifier + z);
+        const x2D = x * scale + canvasWidth * 0.5;
+        const y2D = y * scale + canvasHeight * 0.5;
+
+        return [x2D, y2D, scale];
+      }
+
+      // 별의 개수 만큼 각각의 별에 위치 적용 : 시작점
+      for (let i = 0; i < numberOfStars; i++) {
+        x = Math.random() * canvasWidth - canvasWidth * 0.5;
+        y = Math.random() * canvasHeight - canvasHeight * 0.5;
+        z = Math.random() * zModifier;
+
+        scale = zModifier / (zModifier + z);
+
+        pointFrom = set3DPoint(x, y, z);
+        pointTo = set3DPoint(x, y, z - zModifier);
+
+        star = new Star(i); // 별 생성
+
+        /* 키프레임 */
+        keyFrames = [
+          // 시작점
+          {
+            transform: `translate(${pointFrom[0]}px, ${pointFrom[1]}px) scale(${pointFrom[2]})`,
+          },
+
+          // 끝점
+          {
+            transform: `translate(${pointTo[0]}px, ${pointTo[1]}px) scale(${pointTo[2]})`,
+          },
+        ];
+
+        /* 옵션 */
+        options = {
+          duration: 1000 / scale,
+          iterations: Infinity,
+          fill: "both",
+          // direction: "alternate", // 왔다리 갔다리
+          easing: "linear",
+        };
+
+        // GroupEffect로 한번에 다루기 위해서 effects 배열에 추가
+        effects.push(new KeyframeEffect(star.element, keyFrames, options));
+      }
+
+      // 그룹 지정
+      const groupEffect = new GroupEffect(effects);
+
+      // 실행
+      let result = document.timeline.play(groupEffect);
+
+      window.addEventListener("click", () => {
+        if (result.playState === "paused") {
+          result.play();
+        } else {
+          result.pause();
+        }
+      });
+    </script>
+  </body>
+</html>
